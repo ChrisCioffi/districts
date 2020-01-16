@@ -12,7 +12,14 @@ library(leaflet)
 save_datagov_apikey(key = "n3BB27dCbHpsI0BAIyYi5i4nMa3xJk9AXF7cG2Hc")
 
 #select all candidates running for Senate, unnest the data, deliver it in a df, and make sure they raised money 
-NC_senate <- search_candidates(state = "NC", election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>%
+#For North Carolina races
+senate <- search_candidates(state = "NC", election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>%
+#for alaska races (this is useful because the file is somewhat small..... See my sampling script at the bottom for a way to take a radom sample to make testing much speedier)
+#senate <- search_candidates(state = "AK", election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>%
+#for colorado races
+#senate <- search_candidates(state = "CO", election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>%
+#for arizona races
+#senate <- search_candidates(state = "AZ", election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>% 
   #get all their itemized contributions
   get_itemized_contributions(data_structure = "tidy") %>%
   #unnests the pesky committee column and creates unique columns for each of the nested list items.
@@ -28,34 +35,45 @@ NC_senate <- search_candidates(state = "NC", election_year = "2020", office = "S
 #Rural/urban codes were downloaded from https://www.ers.usda.gov/data-products/rural-urban-continuum-codes.aspx
 #fec data accessed from https://classic.fec.gov/disclosurep/PDownload.do
 #subsets the first 5 numbers of the zipcodes row https://www.rdocumentation.org/packages/base/versions/3.6.0/topics/substr
-NC_senate$contributor_zip <- substr(NC_senate$contributor_zip, 1, 5)
+senate$contributor_zip <- substr(senate$contributor_zip, 1, 5)
 #FYI, if you want the last 5, use https://www.rdocumentation.org/packages/FedData/versions/1.1.0/topics/substrRight
 #from zip code package. Supposedly cleans up zip codes.
-NC_senate$contributor_zip <- clean.zipcodes(NC_senate$contributor_zip)
+senate$contributor_zip <- clean.zipcodes(senate$contributor_zip)
 #conjures up the zip_codes table from the noncensus library. Which is a great resource for this project. Because, unlike the zip codes data(zipcodes) table. It has fips codes.
 data(zip_codes)
 #however, there was a lack of zeroes in the fips code fields. And since the clean.zipcodes puts zeroes in front of some four-digit I'm using it here to match up the Census database.
 zip_codes$fips <- clean.zipcodes(zip_codes$fips)
 
-write_csv(NC_senate, "NC_Senate.csv")
+#write_csv(senate, "NC_Senate.csv")
+write_csv(senate, "AK_Senate.csv")
+#write_csv(senate, "CO_Senate.csv")
+#write_csv(senate, "AZ_Senate.csv")
 
-#############
-counties <- read_csv("ZIP_COUNTY.csv")
+
+#############This will be useful if we need to group by county. Not just by zip. Until then, it shall be noted and sit idle.
+#counties <- read_csv("ZIP_COUNTY.csv")
 #props to Dhmontgomery in newsnerdery. to helping me eliminate the excess dupes by using a combination of rank and filter...basically what top_n does. But with the added ability of adding the ties.method element. #I was able to select the highest ratios and then, in the case of ties, R randomly chose one. 
-nodupes <- xwalk %>% 
-  group_by(zip) %>%
-  mutate(rank = rank(tot_ratio, ties.method = "random")) %>% 
-  filter(rank < 2)
+#nodupes <- counties %>% 
+#  group_by(zip) %>%
+#  mutate(rank = rank(tot_ratio, ties.method = "random")) %>% 
+#  filter(rank < 2)
+
+######################
 
 
-
-#let's see what and where Tillis is getting paidddd
-tillis_totals <- NC_senate %>%
+#let's see what and where these senators are getting their funding. This query is just for Tillis donations... and I need to go back and make sure there's no pacs in it. Right now it's set up just to make the map work.
+totals <- senate %>%
+  #this filter changes based on the race
   filter(name %in% "THOM TILLIS COMMITTEE") %>%
-  group_by(name, contributor_zip) %>%
+  group_by(contributor_zip) %>%
   summarise( total_raised = sum(contribution_receipt_amount))
 
-write_csv(NC_totals, "NC_totals.csv")
+
+#to create the file, depending on what you want to find
+#write_csv(totals, "NC_totals.csv")
+#write_csv(totals, "AK_totals.csv")
+#write_csv(totals, "Co_totals.csv")
+#write_csv(totals, "AZ_totals.csv")
 
 ##########
 #returns tigris query file as a shapefile 
@@ -66,21 +84,24 @@ options(tigris_class = "sf")
 
 options(tigris_use_cache = TRUE)
 code_shapefile <- zctas(cb = FALSE, year = 2010, state = "NC")
+#code_shapefile <- zctas(cb = FALSE, year = 2010, state = "AK")
+#code_shapefile <- zctas(cb = FALSE, year = 2010, state = "CO")
+#code_shapefile <- zctas(cb = FALSE, year = 2010, state = "AZ")
 
 #join democratic fundraising numbers with shapefile
 #make sure the zip column is numeric
-cong_tot <- left_join(code_shapefile, tillis_totals, by = c("ZCTA5CE10"= "contributor_zip" ))
+cong_tot <- left_join(code_shapefile, totals , by = c("ZCTA5CE10"= "contributor_zip" ))
 
 
 #########works, but is so slow because of all the shapefiles to plot.
 
-ggplot(cong_tot) + 
-  geom_sf(data = cong_tot) +
-  aes(fill= cut(total_raised,breaks = c(-1, 10000, 30000, 60000, 120000), labels= c("0-9k", "10k-29k", "30k-59k", "60k-120k") )) + 
-  geom_sf(color="black")  +
-  scale_fill_manual(values = c("#FFFFFF", "#C9C5DB", "#938CB8", "#3E386D")) +
-  theme_void() + 
-  labs(title="Funds raised by Thom Tillis in NC zip codes", caption="Source: Federal Elections Commission", color='legend', fill='legend title')
+#ggplot(cong_tot) + 
+#  geom_sf(data = cong_tot) +
+#  aes(fill= cut(total_raised,breaks = c(-1, 10000, 30000, 60000, 120000), labels= c("0-9k", "10k-29k", "30k-59k", "60k-120k") )) + 
+#  geom_sf(color="black")  +
+#  scale_fill_manual(values = c("#FFFFFF", "#C9C5DB", "#938CB8", "#3E386D")) +
+#  theme_void() + 
+#  labs(title="Funds raised by Thom Tillis in NC zip codes", caption="Source: Federal Elections Commission", color='legend', fill='legend title')
 
 
 #leaflet works much faster 
@@ -105,7 +126,7 @@ leaflet(data = cong_tot) %>%
 
 
 
-sum(tillis_totals$total_raised)
+
 
 #helpful for running code in a smaller subset of data for testing purposes
 dt <- 
@@ -113,4 +134,4 @@ dt <-
   #slices off number of rows from 1:xx in df
   #slice(1:4)
   #slices off random number of rows from data
-  sample_n(NC_senate, 10)
+  sample_n(senate, 10)
