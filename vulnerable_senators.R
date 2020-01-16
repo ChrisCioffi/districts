@@ -76,7 +76,7 @@ totals <- senate %>%
 #write_csv(totals, "AZ_totals.csv")
 
 ##########
-#returns tigris query file as a shapefile 
+#returns tigris query file as a shapefile (if not, it's a weird list that doesn't join)
 options(tigris_class = "sf")
 
 #Download a Zip Code Tabulation Area (ZCTA) shapefile into R
@@ -89,7 +89,7 @@ code_shapefile <- zctas(cb = FALSE, year = 2010, state = "NC")
 #code_shapefile <- zctas(cb = FALSE, year = 2010, state = "AZ")
 
 #join democratic fundraising numbers with shapefile
-#make sure the zip column is numeric
+#make sure the zip column is numeric and then join the two, so we can make the shapefile and contributions data work together like happy friends in leaflet
 cong_tot <- left_join(code_shapefile, totals , by = c("ZCTA5CE10"= "contributor_zip" ))
 
 
@@ -104,7 +104,7 @@ cong_tot <- left_join(code_shapefile, totals , by = c("ZCTA5CE10"= "contributor_
 #  labs(title="Funds raised by Thom Tillis in NC zip codes", caption="Source: Federal Elections Commission", color='legend', fill='legend title')
 
 
-#leaflet works much faster 
+#leaflet works much faster and it gives us a more interactive graphic, which i'm partial to.
 
 bins <- c(0, 100, 10000, 20000, 40000, 60000, 80000, 100000, Inf)
 pal1 <- colorBin("inferno", domain = cong_tot$total_raised, bins = bins)
