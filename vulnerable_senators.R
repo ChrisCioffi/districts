@@ -11,9 +11,9 @@ save_datagov_apikey(key = "n3BB27dCbHpsI0BAIyYi5i4nMa3xJk9AXF7cG2Hc")
 
 #select all candidates running for Senate, unnest the data, deliver it in a df, and make sure they raised money 
 #For North Carolina races
-#senate <- search_candidates(state = "NC", election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>%
+senate <- search_candidates(state = "NC", election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>%
 #for alaska races (this is useful because the file is somewhat small..... See my sampling script at the bottom for a way to take a radom sample to make testing much speedier)
-senate <- search_candidates(state = "AK", election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>%
+#senate <- search_candidates(state = "AK", election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>%
 #for colorado races
 #senate <- search_candidates(state = "CO", election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>%
 #for arizona races
@@ -29,15 +29,15 @@ senate <- search_candidates(state = "AK", election_year = "2020", office = "S", 
   # itemized individual contributions are recorded on line 11ai & we want to get the contributions given in the last 2-year cycle
   filter(report_year > 2018 & line_number %in% "11AI")
 
-
+senate$contributor_zip <- as.character(senate$contributor_zip)
 #Rural/urban codes were downloaded from https://www.ers.usda.gov/data-products/rural-urban-continuum-codes.aspx
 #fec data accessed from https://classic.fec.gov/disclosurep/PDownload.do
 #subsets the first 5 numbers of the zipcodes row https://www.rdocumentation.org/packages/base/versions/3.6.0/topics/substr
 senate$contributor_zip <- substr(senate$contributor_zip, 1, 5)
 #FYI, if you want the last 5, use https://www.rdocumentation.org/packages/FedData/versions/1.1.0/topics/substrRight
 
-#write_csv(senate, "NC_Senate.csv")
-write_csv(senate, "AK_Senate.csv")
+write_csv(senate, "NC_Senate.csv")
+#write_csv(senate, "AK_Senate.csv")
 #write_csv(senate, "CO_Senate.csv")
 #write_csv(senate, "AZ_Senate.csv")
 
@@ -45,8 +45,8 @@ write_csv(senate, "AK_Senate.csv")
 #let's see what and where these senators are getting their funding. This query is just for Tillis donations... and I need to go back and make sure there's no pacs in it. Right now it's set up just to make the map work.
 totals <- senate %>%
   #this filter changes based on the race
-  #filter(name %in% "THOM TILLIS COMMITTEE") %>%
-  filter(name %in% "ALASKANS FOR DAN SULLIVAN") %>%
+  filter(name %in% "THOM TILLIS COMMITTEE") %>%
+  #filter(name %in% "ALASKANS FOR DAN SULLIVAN") %>%
   group_by(contributor_zip) %>%
   summarise( total_raised = sum(contribution_receipt_amount))
 
