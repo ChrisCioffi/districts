@@ -13,9 +13,9 @@ save_datagov_apikey(key = "n3BB27dCbHpsI0BAIyYi5i4nMa3xJk9AXF7cG2Hc")
 
 #select all candidates running for Senate, unnest the data, deliver it in a df, and make sure they raised money 
 #For North Carolina races
-senate <- search_candidates(state = "NC", election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>%
+#senate <- search_candidates(state = "NC", election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>%
 #for alaska races (this is useful because the file is somewhat small..... See my sampling script at the bottom for a way to take a radom sample to make testing much speedier)
-#senate <- search_candidates(state = "AK", election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>%
+senate <- search_candidates(state = "AK", election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>%
 #for colorado races
 #senate <- search_candidates(state = "CO", election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>%
 #for arizona races
@@ -31,18 +31,11 @@ senate <- search_candidates(state = "NC", election_year = "2020", office = "S", 
   filter(report_year > 2018 & line_number %in% "11AI")
 
 
-
 #Rural/urban codes were downloaded from https://www.ers.usda.gov/data-products/rural-urban-continuum-codes.aspx
 #fec data accessed from https://classic.fec.gov/disclosurep/PDownload.do
 #subsets the first 5 numbers of the zipcodes row https://www.rdocumentation.org/packages/base/versions/3.6.0/topics/substr
 senate$contributor_zip <- substr(senate$contributor_zip, 1, 5)
 #FYI, if you want the last 5, use https://www.rdocumentation.org/packages/FedData/versions/1.1.0/topics/substrRight
-#from zip code package. Supposedly cleans up zip codes.
-senate$contributor_zip <- clean.zipcodes(senate$contributor_zip)
-#conjures up the zip_codes table from the noncensus library. Which is a great resource for this project. Because, unlike the zip codes data(zipcodes) table. It has fips codes.
-data(zip_codes)
-#however, there was a lack of zeroes in the fips code fields. And since the clean.zipcodes puts zeroes in front of some four-digit I'm using it here to match up the Census database.
-zip_codes$fips <- clean.zipcodes(zip_codes$fips)
 
 #write_csv(senate, "NC_Senate.csv")
 write_csv(senate, "AK_Senate.csv")
@@ -50,21 +43,10 @@ write_csv(senate, "AK_Senate.csv")
 #write_csv(senate, "AZ_Senate.csv")
 
 
-#############This will be useful if we need to group by county. Not just by zip. Until then, it shall be noted and sit idle.
-#counties <- read_csv("ZIP_COUNTY.csv")
-#props to Dhmontgomery in newsnerdery. to helping me eliminate the excess dupes by using a combination of rank and filter...basically what top_n does. But with the added ability of adding the ties.method element. #I was able to select the highest ratios and then, in the case of ties, R randomly chose one. 
-#nodupes <- counties %>% 
-#  group_by(zip) %>%
-#  mutate(rank = rank(tot_ratio, ties.method = "random")) %>% 
-#  filter(rank < 2)
-
-######################
-
-
 #let's see what and where these senators are getting their funding. This query is just for Tillis donations... and I need to go back and make sure there's no pacs in it. Right now it's set up just to make the map work.
 totals <- senate %>%
   #this filter changes based on the race
-  filter(name %in% "THOM TILLIS COMMITTEE") %>%
+  #filter(name %in% "THOM TILLIS COMMITTEE") %>%
   group_by(contributor_zip) %>%
   summarise( total_raised = sum(contribution_receipt_amount))
 
@@ -83,15 +65,14 @@ options(tigris_class = "sf")
 #read in our shapefile
 
 options(tigris_use_cache = TRUE)
-code_shapefile <- zctas(cb = FALSE, year = 2010, state = "NC")
-#code_shapefile <- zctas(cb = FALSE, year = 2010, state = "AK")
+#code_shapefile <- zctas(cb = FALSE, year = 2010, state = "NC")
+code_shapefile <- zctas(cb = FALSE, year = 2010, state = "AK")
 #code_shapefile <- zctas(cb = FALSE, year = 2010, state = "CO")
 #code_shapefile <- zctas(cb = FALSE, year = 2010, state = "AZ")
 
 #join democratic fundraising numbers with shapefile
 #make sure the zip column is numeric and then join the two, so we can make the shapefile and contributions data work together like happy friends in leaflet
 cong_tot <- left_join(code_shapefile, totals , by = c("ZCTA5CE10"= "contributor_zip" ))
-
 
 #########works, but is so slow because of all the shapefiles to plot.
 
@@ -106,12 +87,12 @@ cong_tot <- left_join(code_shapefile, totals , by = c("ZCTA5CE10"= "contributor_
 
 #leaflet works much faster and it gives us a more interactive graphic, which i'm partial to.
 
-bins <- c(0, 100, 10000, 20000, 40000, 60000, 80000, 100000, Inf)
+bins <- c(0, 100, 500, 1000, 5000, 10000, Inf)
 pal1 <- colorBin("inferno", domain = cong_tot$total_raised, bins = bins)
 map <- leaflet(cong_tot) %>% addTiles()
 state_popup1 <- paste0("<strong> District: </strong>", 
                        cong_tot$contributor_zip, 
-                       "<br><strong>Total Raised by Tillis: </strong>", 
+                       "<br><strong>Total Raised: </strong>", 
                        cong_tot$total_raised)
 leaflet(data = cong_tot) %>%
   addProviderTiles("CartoDB.Positron") %>%
@@ -121,7 +102,7 @@ leaflet(data = cong_tot) %>%
               weight = 1, 
               popup = state_popup1) %>%
   addLegend("bottomright", pal = pal1, values = ~total_raised,
-            title = "Total raised by Tillis",
+            title = "Total raised",
             labFormat = labelFormat(prefix = " "))
 
 
@@ -135,3 +116,24 @@ dt <-
   #slice(1:4)
   #slices off random number of rows from data
   sample_n(senate, 10)
+
+
+#from zip code package. Was used in original code. And Supposedly cleans up zip codes. Cran has been rudely pulled down the orphan package which I found rude. It's useful. But if it's gone, it's gone. 
+#senate$contributor_zip <- clean.zipcodes(senate$contributor_zip)
+#conjures up the zip_codes table from the noncensus library. Which is a great resource for this project. Because, unlike the zip codes data(zipcodes) table. It has fips codes.
+#data(zip_codes)
+#however, there was a lack of zeroes in the fips code fields. And since the clean.zipcodes puts zeroes in front of some four-digit I'm using it here to match up the Census database.
+#zip_codes$fips <- clean.zipcodes(zip_codes$fips)
+
+
+
+#############This will be useful if we need to group by county. Not just by zip. Until then, it shall be noted and sit idle.
+
+#counties <- read_csv("ZIP_COUNTY.csv")
+#props to Dhmontgomery in newsnerdery. to helping me eliminate the excess dupes by using a combination of rank and filter...basically what top_n does. But with the added ability of adding the ties.method element. #I was able to select the highest ratios and then, in the case of ties, R randomly chose one. 
+#nodupes <- counties %>% 
+#  group_by(zip) %>%
+#  mutate(rank = rank(tot_ratio, ties.method = "random")) %>% 
+#  filter(rank < 2)
+
+######################
