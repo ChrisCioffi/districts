@@ -26,6 +26,7 @@ senate <- search_candidates(state = "AK", election_year = "2020", office = "S", 
   unnest_wider(committee, names_repair = "unique") %>%
   #select only the fields I want.
   select(schedule_type_full, report_type, line_number, line_number_label, contributor_state, is_individual, report_year, contributor_city, contribution_receipt_date, contributor_aggregate_ytd, two_year_transaction_period, contribution_receipt_amount, contributor_zip, contributor_name, state, party, committee_type_full, state_full, name, fec_election_type_desc) %>%
+  # itemized individual contributions are recorded on line 11ai & we want to get the contributions given in the last 2-year cycle
   filter(report_year > 2018 & line_number %in% "11AI")
 
 
@@ -117,7 +118,9 @@ dt <-
   sample_n(senate, 10)
 
 
-#from zip code package. Was used in original code. And Supposedly cleans up zip codes. Cran has been rudely pulled down the orphan package which I found rude. It's useful. But if it's gone, it's gone. 
+#from zip code and noncensus packages. Was used in original code. And Supposedly cleans up zip codes, gets me FIPS codes. Cran has been rudely pulled down the orphan packages which I found rude. It's useful. But if it's gone, it's gone. 
+#library(zipcode)
+#library(noncensus)
 #senate$contributor_zip <- clean.zipcodes(senate$contributor_zip)
 #conjures up the zip_codes table from the noncensus library. Which is a great resource for this project. Because, unlike the zip codes data(zipcodes) table. It has fips codes.
 #data(zip_codes)
@@ -136,3 +139,7 @@ dt <-
 #  filter(rank < 2)
 
 ######################
+
+
+#USEFUL DOCUMENTATION #
+#https://s3.amazonaws.com/ire16/campaign-finance/MiningFECData.pdf
