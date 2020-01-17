@@ -3,8 +3,6 @@
 
 library(tidyverse)
 library(tidyusafec)
-library(zipcode)
-library(noncensus)
 library(tigris)
 library(leaflet)
 
