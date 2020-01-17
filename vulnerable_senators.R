@@ -47,6 +47,7 @@ write_csv(senate, "AK_Senate.csv")
 totals <- senate %>%
   #this filter changes based on the race
   #filter(name %in% "THOM TILLIS COMMITTEE") %>%
+  filter(name %in% "ALASKANS FOR DAN SULLIVAN") %>%
   group_by(contributor_zip) %>%
   summarise( total_raised = sum(contribution_receipt_amount))
 
