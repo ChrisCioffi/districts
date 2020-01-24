@@ -3,6 +3,7 @@
 
 library(tidyverse)
 library(tidyusafec)
+#great primer on tidyusafec here: https://stephenholzman.github.io/tidyusafec/articles/search-functions.html#search_candidates /// more or less full documentation here: https://rdrr.io/github/stephenholzman/tidyusafec/man/get_candidate_totals.html
 library(tigris)
 library(leaflet)
 
@@ -21,9 +22,9 @@ save_datagov_apikey(key = "n3BB27dCbHpsI0BAIyYi5i4nMa3xJk9AXF7cG2Hc")
 #for arizona races
 
 #### Here's the queries I've been using for counties
-senate <- search_candidates(name = c("MCSALLY, MARTHA"), election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>% 
+#senate <- search_candidates(name = c("MCSALLY, MARTHA"), election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>% 
 #I've split these into two queries, because my key currently only allows for 1,000 queries in an hour. This is the one for Kelly. When we make the maps, we can address this.
-#senate <- search_candidates(name = c("KELLY, MARK"), election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>% 
+senate <- search_candidates(name = c("KELLY, MARK"), election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>% 
   #get all their itemized contributions
   get_itemized_contributions(data_structure = "tidy") %>%
   #unnests the pesky committee column and creates unique columns for each of the nested list items.
@@ -48,7 +49,9 @@ senate$contributor_zip <- substr(senate$contributor_zip, 1, 5)
 #############
 #let's read in the counties dataset and the fips code datasets so we can crosswalk the itemized donor zip codes into the counties shapefile  
 counties <- read_csv("ZIP_COUNTY.csv")
+#crosswalk available here https://www.huduser.gov/portal/datasets/usps_crosswalk.html#codebook
 codes <- read_csv("fips.csv") %>%
+#
   set_names("fips_code", "county_name","state_abbrev")
 #props to Dhmontgomery in newsnerdery. to helping me eliminate the excess dupes by using a combination of rank and filter...basically what top_n does. But with the added ability of adding the ties.method element. #I was able to select the highest ratios and then, in the case of ties, R randomly chose one. 
 nodupes <- counties %>% 
@@ -56,7 +59,7 @@ nodupes <- counties %>%
   mutate(rank = rank(tot_ratio, ties.method = "random")) %>% 
   filter(rank < 2)
 #joining the McSally or Kelly donors with the crosswalk that's got no duplicates
-nodupe_donors <- left_join(mcsally, nodupes , by = c("contributor_zip"= "zip" ))
+nodupe_donors <- left_join(senate, nodupes , by = c("contributor_zip"= "zip" ))
 #now let's join the county fips codes with the names of the counties so we know what the actual name of the county is...  it's what's provided in the shapefile
 county_donors <- left_join(nodupe_donors, codes, by = c("county" = "fips_code"))
   
@@ -89,6 +92,8 @@ options(tigris_use_cache = TRUE)
 #code_shapefile <- zctas(cb = FALSE, year = 2010, state = "NC")
 #code_shapefile <- zctas(cb = FALSE, year = 2010, state = "AK")
 #code_shapefile <- zctas(cb = FALSE, year = 2010, state = "CO")
+#code_shapefile <- zctas(cb = FALSE, year = 2010, state = "AZ")
+#this gets the counties shapefile for the state of Arizona. IT's a big state. But only has 15 counties.
 code_shapefile <- counties("Arizona", cb = TRUE)
 
 #join democratic fundraising numbers with shapefile
@@ -106,7 +111,7 @@ ggplot(cong_tot) +
   geom_sf(color="black")  +
   scale_fill_manual(values = c("#efeef6", "#C9C5DB", "#938CB8", "#3E386D", "#574e97")) +
   theme_void() + 
-  labs(title="Funds raised by Thom Tillis in NC zip codes", caption="Source: Federal Elections Commission", color='legend', fill='legend title')
+  labs(title="Funds raised in AZ counties", caption="Source: Federal Elections Commission", color='legend', fill='legend title')
 
 
 #leaflet works much faster and it gives us a more interactive graphic, which i'm partial to.
