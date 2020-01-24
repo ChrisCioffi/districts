@@ -116,7 +116,7 @@ ggplot(cong_tot) +
 
 #leaflet works much faster and it gives us a more interactive graphic, which i'm partial to.
 
-bins <- c(0, 1000, 5000, 20000, 100000, 500000, Inf)
+bins <- c(0, 1000, 5000, 20000, 100000, 500000, 750000, Inf)
 pal1 <- colorBin("inferno", domain = cong_tot$total_raised_no_na, bins = bins)
 map <- leaflet(cong_tot) %>% addTiles()
 state_popup1 <- paste0("<strong> County: </strong>", 
