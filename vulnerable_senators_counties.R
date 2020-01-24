@@ -12,6 +12,10 @@ save_datagov_apikey(key = "n3BB27dCbHpsI0BAIyYi5i4nMa3xJk9AXF7cG2Hc")
 
 
 
+#I want to do the opposite of in, later as part of my filter, so I'm definining the %notin% function here
+`%notin%` <- Negate(`%in%`)
+
+
 #select all candidates running for Senate, unnest the data, deliver it in a df, and make sure they raised money 
 #For North Carolina races
 #senate <- search_candidates(state = "NC", election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>%
@@ -32,9 +36,9 @@ senate <- search_candidates(name = c("KELLY, MARK"), election_year = "2020", off
   #something else he suggested. I didn't need it, but am putting it here for safe keeping https://jennybc.github.io/purrr-tutorial/ls00_inspect-explore.html
   unnest_wider(committee, names_repair = "unique") %>%
   #select only the fields I want.
-  select(schedule_type_full, report_type, line_number, line_number_label, contributor_state, is_individual, report_year, contributor_city, contribution_receipt_date, contributor_aggregate_ytd, two_year_transaction_period, contribution_receipt_amount, contributor_zip, contributor_name, state, party, committee_type_full, state_full, name, fec_election_type_desc) %>%
-  # itemized individual contributions are recorded on line 11ai & we want to get the contributions given in the last 2-year cycle
-  filter(report_year > 2018 & line_number %in% "11AI")
+  select(schedule_type_full, report_type, line_number, line_number_label, contributor_state, is_individual, report_year, contributor_city, contribution_receipt_date, contributor_aggregate_ytd, two_year_transaction_period, contribution_receipt_amount, contributor_zip, contributor_name, state, party, committee_type_full, state_full, name, fec_election_type_desc, memo_code) %>%
+  # itemized individual contributions are recorded on line 11ai & we want to get the contributions given in the last 2-year cycle. We also want to exclude a double-count that happens with win red and act blue contributions. By excluding the x memo_code, we can eliminate those double-counts
+  filter(report_year > 2018 & line_number %in% "11AI" & memo_code %notin% "X" )
 #preserve the zeroes
 senate$contributor_zip <- as.character(senate$contributor_zip)
 #Rural/urban codes were downloaded from https://www.ers.usda.gov/data-products/rural-urban-continuum-codes.aspx
