@@ -10,11 +10,14 @@ library(censusapi)
 save_datagov_apikey(key = Sys.getenv("FEC_API_KEY"))
 census_key = Sys.getenv("CENSUS_KEY")
 
+
 #tell tigris we're working with shape files
 options(tigris_class = "sf")
 
+
 ## create a function that does the opposite of `%in%`
 `%notin%` <- Negate(`%in%`)
+
 
 #pull the data we want from the API
 kellyContribsRaw <- search_candidates(name = c("KELLY, MARK"), 
@@ -48,56 +51,69 @@ kellyContribsRaw <- search_candidates(name = c("KELLY, MARK"),
          memo_code) %>%
 filter(report_year > 2018 & line_number %in% "11AI" & memo_code %notin% "X" )
 
-#select further specific data for graphics in a new dataframe
-filterKelly <- kellyContribsRaw %>% 
+
+# create a dataframe of in-state contributions
+instate_funds <- kellyContribsRaw %>% 
   select(report_type, 
          contributor_name,
          contributor_city,
          contributor_state,
          contributor_zip,
          contribution_receipt_amount,
-         contribution_receipt_date)
+         contribution_receipt_date) %>% 
+  filter(contributor_state=="AZ")
 #preserve zeroes of zipcodes, then chop last five numbers
-  filterKelly$contributor_zip <- as.character(filterKelly$contributor_zip)
-  filterKelly$contributor_zip <- substr(filterKelly$contributor_zip, 1, 5)
+instate_funds$contributor_zip <- as.character(instate_funds$contributor_zip)
+instate_funds$contributor_zip <- substr(instate_funds$contributor_zip, 1, 5)
+
+
+#create a dataframe of out-of-state contributions
+outstate_funds <- kellyContribsRaw %>% 
+  select(report_type, 
+         contributor_name,
+         contributor_city,
+         contributor_state,
+         contributor_zip,
+         contribution_receipt_amount,
+         contribution_receipt_date) %>% 
+  filter(contributor_state != "AZ")
+#preserve zeroes of zipcodes, then chop last five numbers
+  outstate_funds$contributor_zip <- as.character(outstate_funds$contributor_zip)
+  outstate_funds$contributor_zip <- substr(outstate_funds$contributor_zip, 1, 5)
   
-######################################################################################
+###############################      NOTE      #######################################
+##                                                                                  ##
 ##       there are three 00000 zipcodes, here are the images for them:              ##
 ##       Pio, J https://docquery.fec.gov/cgi-bin/fecimg/?201910159164670517         ##
 ##       Judy, Todd https://docquery.fec.gov/cgi-bin/fecimg/?201904159146387245     ##
 ##       Swift, Susan https://docquery.fec.gov/cgi-bin/fecimg/?201910159164670481   ##
+##                                                                                  ##
 ######################################################################################  
   
-kellyTotals <- filterKelly %>% 
-  group_by(contributor_zip) %>% 
+state_totals <- outstate_funds %>% 
+  group_by(contributor_state) %>% 
   summarise(total_raised = sum(contribution_receipt_amount))
 
-#get shapefile
-az <- zctas("AZ", cb=T)
-cong_tot <- left_join(az, totals , by = c("ZCTA5CE10"= "contributor_zip" ))
 
-
-
-### code below is in progress/broken
-## trying to figure out how to call population by zcta
-geography <- listCensusMetadata(name = "acs/acs5", vintage = 2017, type = "geography")
-variables <- listCensusMetadata(name = "acs/acs5", vintage = 2017, type = "variables")
-apis <- listCensusApis()
+## run these to learn about the census api
+# geography <- listCensusMetadata(name = "acs/acs5", vintage = 2017, type = "geography")
+# variables <- listCensusMetadata(name = "acs/acs5", vintage = 2017, type = "variables")
+# apis <- listCensusApis()
 
 
 #call should be something along this line
 population <- getCensus(name = "acs/acs5",
-#                          group = "B01003", # is this required? useful?
-                          vintage = 2017,
-                          vars = c("NAME", "B01003"), ## are tables required as variables?
-                          region = "zcta:*", #or "zipcode tabulation area: *" or does this require state and zcta?
-                          regionin = "state:04") 
+                          vintage = 2018,
+                          vars = c("B01003_001E", "GEO_ID"),
+                          region = "zip code tabulation area:*") 
 
-### example of what worked previously
-ohio_pop_2016 <- getCensus(name = "pep/population",
-                           vintage = 2016,
-                           vars = c("GEONAME", "POP"),
-                           region = "county:*",
-                           regionin = "state: 39")
+#TODO: combine population data w/ arizona data, dropping all the zctas we don't need 
 
 
+#TODO: pull shapefile for arizona
+
+
+#TODO: map arizona zcta contributions
+
+
+#TODO: export out-of-state data for bar chart via graphics rig. this only requires top five states and totals
