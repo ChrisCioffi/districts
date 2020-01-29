@@ -110,6 +110,12 @@ population <- getCensus(name = "acs/acs5",
 #TODO: combine population data w/ arizona data, dropping all the zctas we don't need 
 
 
+#TODO: normalize zcta population/az contributions by 100K pop
+
+
+#TODO: pull state by state data, normalize out of state contributions by that 100K pop
+
+
 #TODO: pull shapefile for arizona
 
 
