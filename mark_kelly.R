@@ -87,12 +87,11 @@ apis <- listCensusApis()
 
 #call should be something along this line
 population <- getCensus(name = "acs/acs5",
-                        vintage = 2017,
-                        group = "B01003",
-                        vars = c("B01003_001E", "B01003_001M","B01003_001MA","B01003_001EA", "GEOID"),
-                        region = "state:04", "zip code tabulation area:*",
-                        regionin = "state:04",
-                        key=census_key)
+#                          group = "B01003", # is this required? useful?
+                          vintage = 2017,
+                          vars = c("NAME", "B01003"), ## are tables required as variables?
+                          region = "zcta:*", #or "zipcode tabulation area: *" or does this require state and zcta?
+                          regionin = "state:04") 
 
 ### example of what worked previously
 ohio_pop_2016 <- getCensus(name = "pep/population",
