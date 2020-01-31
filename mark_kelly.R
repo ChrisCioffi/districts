@@ -5,22 +5,19 @@ library(tigris)
 library(sf)
 library(censusapi)
 
-
 #load API keys from env file
 save_datagov_apikey(key = Sys.getenv("FEC_API_KEY"))
-census_key = Sys.getenv("CENSUS_KEY")
-
+census_key = Sys.getenv("CENSUS_API_KEY")
 
 #tell tigris we're working with shape files
 options(tigris_class = "sf")
-
 
 ## create a function that does the opposite of `%in%`
 `%notin%` <- Negate(`%in%`)
 
 
 #pull the data we want from the API
-kellyContribsRaw <- search_candidates(name = c("KELLY, MARK"), 
+rawContribs <- search_candidates(name = c("KELLY, MARK"), 
                            election_year = "2020", 
                            office ="S",
                            candidate_status = "C",
@@ -53,7 +50,7 @@ filter(report_year > 2018 & line_number %in% "11AI" & memo_code %notin% "X" )
 
 
 # create a dataframe of in-state contributions
-instate_funds <- kellyContribsRaw %>% 
+instate_funds <- rawContribs %>% 
   select(report_type, 
          contributor_name,
          contributor_city,
@@ -68,7 +65,7 @@ instate_funds$contributor_zip <- substr(instate_funds$contributor_zip, 1, 5)
 
 
 #create a dataframe of out-of-state contributions
-outstate_funds <- kellyContribsRaw %>% 
+outstate_funds <- rawContribs %>% 
   select(report_type, 
          contributor_name,
          contributor_city,
@@ -94,6 +91,9 @@ state_totals <- outstate_funds %>%
   group_by(contributor_state) %>% 
   summarise(total_raised = sum(contribution_receipt_amount))
 
+az_totals <- instate_funds %>% 
+  group_by(contributor_zip) %>% 
+  summarise(total_raised = sum(contribution_receipt_amount))
 
 ## run these to learn about the census api
 # geography <- listCensusMetadata(name = "acs/acs5", vintage = 2017, type = "geography")
@@ -101,25 +101,58 @@ state_totals <- outstate_funds %>%
 # apis <- listCensusApis()
 
 
-#call should be something along this line
+#replace az_totals with crosswalked data 
+# link for reference https://www.udsmapper.org/zcta-crosswalk.cfm
+crosswalk <- read_csv("data/zip_to_zcta_2019.csv")
+az_totals <- left_join(az_totals, crosswalk, by=c("contributor_zip" = "ZIP_CODE"))
+
+# call population data from the census (this calls population for all zctas)
 population <- getCensus(name = "acs/acs5",
                           vintage = 2018,
                           vars = c("B01003_001E", "GEO_ID"),
-                          region = "zip code tabulation area:*") 
+                          region = "zip code tabulation area:*",
+                          key = census_key)
 
-#TODO: combine population data w/ arizona data, dropping all the zctas we don't need 
+#rename population data column population$B01003_001E to "TOTAL_POPULATION"
+population <- rename(population, 
+                     total_population=B01003_001E) 
+
+# create a new dataframe by joining population data to instate_funds data, dropping any zips that don't match.
+az_zcta <- left_join(az_totals, population, by=c("ZCTA" = "zip_code_tabulation_area"))
+
+# write_csv(az_zcta, "output/az_totals_zcta.csv")
 
 
-#TODO: normalize zcta population/az contributions by 100K pop
+#TODO: figure out if this normalization was correct -- (contributions/zcta population)*10K
+normalized_az <- mutate(az_zcta, 
+                        normalize_population=(total_raised/total_population)*100)
+# write_csv(normalized_az, "output/normalized_az.csv")
 
 
-#TODO: pull state by state data, normalize out of state contributions by that 100K pop
+# download arizona sf data from tigris
+# az_sf <- zctas(starts_with = c("85", "86"))
+az_sf <- zctas(cb = FALSE, year = 2010, state = "AZ")
 
 
-#TODO: pull shapefile for arizona
+# join that sf data with normalized_az df
+# map_data <- left_join(normalized_az, az_sf,
+#                       by=c("contributor_zip" = "ZCTA5CE10"))
 
+# write_csv(map_data, "output/az_map_data.csv") ## trying to export for qgis
 
 #TODO: map arizona zcta contributions
+# arizona_map <- ggplot(map_data) +
+#   geom_sf(data = map_data) +
+#   aes(fill= map_data$total_raised) +
+#   geom_sf(color="black")  +
+#   # scale_fill_manual(values = c("#FFFFFF", "#C9C5DB", "#938CB8", "#3E386D")) +
+#   theme_void() +
+#   labs(title="Mark Kelly's contributions by zcta per 10k", color='legend', fill='legend title')
+# arizona_map
 
 
-#TODO: export out-of-state data for bar chart via graphics rig. this only requires top five states and totals
+#TODO: pull state by state population data -- (state contributions/state populations)/100k
+
+
+
+#TODO: export out-of-state data for bar chart via graphics rig. this only requires top ten states and totals
