@@ -6,6 +6,9 @@ library(tidyusafec)
 library(tigris)
 library(leaflet)
 
+#signup for api key at https://api.open.fec.gov/developers/. Save a one line file called "data.gov.key" in the root project folder, that one line assigning the key to a variable like the next line:
+save_datagov_apikey(key = "n3BB27dCbHpsI0BAIyYi5i4nMa3xJk9AXF7cG2Hc")
+
 #I want to do the opposite of in, later as part of my filter, so I'm definining the %notin% function here
 `%notin%` <- Negate(`%in%`)
 
@@ -50,10 +53,6 @@ totals <- senate %>%
   group_by(contributor_zip) %>%
   summarise( total_raised = sum(contribution_receipt_amount))
 
-#and there's two counties that have a total of 0 (their populations are a total of 27k residents), so we're going to replace those values with zeroes.We'll create a new column just in case
-cong_tot <- cong_tot %>% 
-  mutate(total_raised_no_na = replace_na(total_raised, 0))
-##########
 #returns tigris query file as a shapefile (if not, it's a weird list that doesn't join)
 options(tigris_class = "sf")
 
@@ -70,6 +69,10 @@ code_shapefile <- zctas(cb = FALSE, year = 2010, state = "AZ")
 #make sure the zip column is numeric and then join the two, so we can make the shapefile and contributions data work together like happy friends in leaflet
 cong_tot <- left_join(code_shapefile, totals , by = c("ZCTA5CE10"= "contributor_zip" ))
 
+#and there's two counties that have a total of 0 (their populations are a total of 27k residents), so we're going to replace those values with zeroes.We'll create a new column just in case
+cong_tot <- cong_tot %>% 
+  mutate(total_raised_no_na = replace_na(total_raised, 0))
+##########
 #########works, but is so slow because of all the shapefiles to plot.
 
 #ggplot(cong_tot) + 
@@ -83,8 +86,8 @@ cong_tot <- left_join(code_shapefile, totals , by = c("ZCTA5CE10"= "contributor_
 
 #leaflet works much faster and it gives us a more interactive graphic, which i'm partial to.
 
-bins <- c(0, 10, 500, 1000, 10000, 50000, 100000, Inf)
-pal1 <- colorBin("inferno", domain = cong_tot$total_raised_no_na, bins = bins)
+bins <- c(0, 100, 1000, 10000, 100000, 200000, Inf)
+pal1 <- colorBin(palette = c("#FFFFFF", "#C9C5DB","#05B69C", "#F9A51A", "#C73D49"), domain = cong_tot$total_raised_no_na, bins = bins) 
 map <- leaflet(cong_tot) %>% addTiles()
 state_popup1 <- paste0("<strong> District: </strong>", 
                        cong_tot$ZCTA5CE10, 

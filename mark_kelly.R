@@ -111,7 +111,7 @@ population <- getCensus(name = "acs/acs5",
                           vintage = 2018,
                           vars = c("B01003_001E", "GEO_ID"),
                           region = "zip code tabulation area:*",
-                          key = census_key)
+                          key = "6ca1427d5d740735f295c8fc411c95119b1100c9")
 
 #rename population data column population$B01003_001E to "TOTAL_POPULATION"
 population <- rename(population, 
@@ -135,8 +135,8 @@ az_sf <- zctas(cb = FALSE, year = 2010, state = "AZ")
 
 
 # join that sf data with normalized_az df
-# map_data <- left_join(normalized_az, az_sf,
-#                       by=c("contributor_zip" = "ZCTA5CE10"))
+ map_data <- left_join(normalized_az, az_sf,
+                       by=c("contributor_zip" = "ZCTA5CE10"))
 
 # write_csv(map_data, "output/az_map_data.csv") ## trying to export for qgis
 
@@ -149,6 +149,24 @@ az_sf <- zctas(cb = FALSE, year = 2010, state = "AZ")
 #   theme_void() +
 #   labs(title="Mark Kelly's contributions by zcta per 10k", color='legend', fill='legend title')
 # arizona_map
+
+bins <- c(0, 1000, 5000, 20000, 100000, 500000, 750000, Inf)
+pal1 <- colorBin("inferno", domain = cong_tot$total_raised_no_na, bins = bins)
+map <- leaflet(cong_tot) %>% addTiles()
+state_popup1 <- paste0("<strong> County: </strong>", 
+                       cong_tot$NAME, 
+                       "<br><strong>Total Raised: </strong>", 
+                       cong_tot$total_raised_no_na)
+leaflet(data = cong_tot) %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addPolygons(fillColor = ~pal1(total_raised_no_na), 
+              fillOpacity = 0.8, 
+              color = "#BDBDC3", 
+              weight = 1, 
+              popup = state_popup1) %>%
+  addLegend("bottomright", pal = pal1, values = ~total_raised_no_na,
+            title = "Total raised",
+            labFormat = labelFormat(prefix = " "))
 
 
 #TODO: pull state by state population data -- (state contributions/state populations)/100k
