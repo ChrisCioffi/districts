@@ -7,7 +7,7 @@ library(tigris)
 library(leaflet)
 
 #signup for api key at https://api.open.fec.gov/developers/. Save a one line file called "data.gov.key" in the root project folder, that one line assigning the key to a variable like the next line:
-save_datagov_apikey(key = "n3BB27dCbHpsI0BAIyYi5i4nMa3xJk9AXF7cG2Hc")
+save_datagov_apikey(key = "n3BB27dCbHpsI0BAIyYi5i4nMa3xJk9AXF7cG2Hc", install =)
 
 #I want to do the opposite of in, later as part of my filter, so I'm definining the %notin% function here
 `%notin%` <- Negate(`%in%`)

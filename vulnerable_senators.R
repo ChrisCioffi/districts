@@ -22,9 +22,9 @@ save_datagov_apikey(key = "n3BB27dCbHpsI0BAIyYi5i4nMa3xJk9AXF7cG2Hc")
 #for arizona races
 
 #### Here's the queries I've been using for counties
-#senate <- search_candidates(name = c("MCSALLY, MARTHA"), election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>% 
+senate <- search_candidates(name = c("MCSALLY, MARTHA"), election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>% 
 #I've split these into two queries, because my key currently only allows for 1,000 queries in an hour. This is the one for Kelly. When we make the maps, we can address this.
-senate <- search_candidates(name = c("KELLY, MARK"), election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>% 
+#senate <- search_candidates(name = c("KELLY, MARK"), election_year = "2020", office = "S", candidate_status = "C" , has_raised_funds = TRUE, unnest_committees = TRUE )  %>% 
   #get all their itemized contributions
   get_itemized_contributions(data_structure = "tidy") %>%
   #unnests the pesky committee column and creates unique columns for each of the nested list items.
@@ -135,8 +135,8 @@ leaflet(data = cong_tot) %>%
             labFormat = labelFormat(prefix = " "))
 
 
-
-
+write_csv(senate, "kelly_numbers.csv")
+sum(senate$contribution_receipt_amount)
 
 
 #helpful for running code in a smaller subset of data for testing purposes
