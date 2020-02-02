@@ -162,3 +162,57 @@ arizona_map <- ggplot(map_data) +
   theme_void() +
   labs(title="Mark Kelly's contributions by zcta per 100", color='legend', fill='legend title')
 arizona_map
+
+
+# write_csv(map_data, "output/az_map_data.csv") ## trying to export for qgis
+
+
+bins <- c(0, 1000, 5000, 20000, 100000, 500000, 750000, Inf)
+pal1 <- colorBin("inferno", domain = cong_tot$total_raised_no_na, bins = bins)
+map <- leaflet(cong_tot) %>% addTiles()
+state_popup1 <- paste0("<strong> County: </strong>", 
+                       cong_tot$NAME, 
+                       "<br><strong>Total Raised: </strong>", 
+                       cong_tot$total_raised_no_na)
+leaflet(data = cong_tot) %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addPolygons(fillColor = ~pal1(total_raised_no_na), 
+              fillOpacity = 0.8, 
+              color = "#BDBDC3", 
+              weight = 1, 
+              popup = state_popup1) %>%
+  addLegend("bottomright", pal = pal1, values = ~total_raised_no_na,
+            title = "Total raised",
+            labFormat = labelFormat(prefix = " "))
+
+
+#TODO: pull state by state population data -- (state contributions/state populations)/100k
+
+
+
+#TODO: export out-of-state data for bar chart via graphics rig. this only requires top ten states and totals
+
+
+
+#### Stashing leaflet code here for further work this weekend
+
+
+#leaflet works much faster and it gives us a more interactive graphic, which i'm partial to.
+
+bins <- c(0, 100, 1000, 10000, 100000, 200000, Inf)
+pal1 <- colorBin(palette = c("#FFFFFF", "#C9C5DB","#05B69C", "#F9A51A", "#C73D49"), domain = cong_tot$total_raised_no_na, bins = bins) 
+map <- leaflet(cong_tot) %>% addTiles()
+state_popup1 <- paste0("<strong> District: </strong>", 
+                       cong_tot$ZCTA5CE10, 
+                       "<br><strong>Total Raised: </strong>", 
+                       cong_tot$total_raised_no_na)
+leaflet(data = cong_tot) %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addPolygons(fillColor = ~pal1(total_raised_no_na), 
+              fillOpacity = 0.8, 
+              color = "#BDBDC3", 
+              weight = 1, 
+              popup = state_popup1) %>%
+  addLegend("bottomright", pal = pal1, values = ~total_raised_no_na,
+            title = "Total raised",
+            labFormat = labelFormat(prefix = " "))
