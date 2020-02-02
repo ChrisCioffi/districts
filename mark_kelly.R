@@ -3,6 +3,7 @@ library(tidyverse)
 library(tidyusafec)
 library(tigris)
 library(sf)
+library(leaflet)
 library(censusapi)
 
 #load API keys from env file
@@ -63,21 +64,25 @@ instate_funds <- rawContribs %>%
 instate_funds$contributor_zip <- as.character(instate_funds$contributor_zip)
 instate_funds$contributor_zip <- substr(instate_funds$contributor_zip, 1, 5)
 
-
+#TODO: think about breaking out-of-state funding for both candidates into a sep. script?
 #create a dataframe of out-of-state contributions
-outstate_funds <- rawContribs %>% 
-  select(report_type, 
-         contributor_name,
-         contributor_city,
-         contributor_state,
-         contributor_zip,
-         contribution_receipt_amount,
-         contribution_receipt_date) %>% 
-  filter(contributor_state != "AZ")
-#preserve zeroes of zipcodes, then chop last five numbers
-  outstate_funds$contributor_zip <- as.character(outstate_funds$contributor_zip)
-  outstate_funds$contributor_zip <- substr(outstate_funds$contributor_zip, 1, 5)
-  
+# outstate_funds <- rawContribs %>% 
+#   select(report_type, 
+#          contributor_name,
+#          contributor_city,
+#          contributor_state,
+#          contributor_zip,
+#          contribution_receipt_amount,
+#          contribution_receipt_date) %>% 
+#   filter(contributor_state != "AZ")
+# #preserve zeroes of zipcodes, then chop last five numbers
+#   outstate_funds$contributor_zip <- as.character(outstate_funds$contributor_zip)
+#   outstate_funds$contributor_zip <- substr(outstate_funds$contributor_zip, 1, 5)
+
+# state_totals <- outstate_funds %>% 
+#   group_by(contributor_state) %>% 
+#   summarise(total_raised = sum(contribution_receipt_amount))
+
 ###############################      NOTE      #######################################
 ##                                                                                  ##
 ##       there are three 00000 zipcodes, here are the images for them:              ##
@@ -86,73 +91,74 @@ outstate_funds <- rawContribs %>%
 ##       Swift, Susan https://docquery.fec.gov/cgi-bin/fecimg/?201910159164670481   ##
 ##                                                                                  ##
 ######################################################################################  
-  
-state_totals <- outstate_funds %>% 
-  group_by(contributor_state) %>% 
-  summarise(total_raised = sum(contribution_receipt_amount))
 
-az_totals <- instate_funds %>% 
-  group_by(contributor_zip) %>% 
-  summarise(total_raised = sum(contribution_receipt_amount))
+# import zcta crosswalk csv, then join on zip codes
+# link for reference https://www.udsmapper.org/zcta-crosswalk.cfm
+crosswalk <- read_csv("data/zip_to_zcta_2019.csv")
+crosswalked_contribs <- left_join(instate_funds, crosswalk, by=c("contributor_zip" = "ZIP_CODE"))
+  
 
 ## run these to learn about the census api
 # geography <- listCensusMetadata(name = "acs/acs5", vintage = 2017, type = "geography")
 # variables <- listCensusMetadata(name = "acs/acs5", vintage = 2017, type = "variables")
 # apis <- listCensusApis()
-
-
-#replace az_totals with crosswalked data 
-# link for reference https://www.udsmapper.org/zcta-crosswalk.cfm
-crosswalk <- read_csv("data/zip_to_zcta_2019.csv")
-az_totals <- left_join(az_totals, crosswalk, by=c("contributor_zip" = "ZIP_CODE"))
-
 # call population data from the census (this calls population for all zctas)
 population <- getCensus(name = "acs/acs5",
-                          vintage = 2018,
-                          vars = c("B01003_001E", "GEO_ID"),
-                          region = "zip code tabulation area:*",
-                          key = census_key)
+                        vintage = 2018,
+                        vars = c("B01003_001E", "GEO_ID"),
+                        region = "zip code tabulation area:*",
+                        key = census_key)
 
 #rename population data column population$B01003_001E to "TOTAL_POPULATION"
 population <- rename(population, 
                      total_population=B01003_001E) 
 
 # create a new dataframe by joining population data to instate_funds data, dropping any zips that don't match.
-az_zcta <- left_join(az_totals, population, by=c("ZCTA" = "zip_code_tabulation_area"))
+az_zcta <- left_join(crosswalked_contribs, population, by=c("ZCTA" = "zip_code_tabulation_area"))
 
-# write_csv(az_zcta, "output/az_totals_zcta.csv")
+#normalize the totals column by population, then multiply by a number that seems to make sense for the population
+### NOTE: this dropped zips 85341 and 85726 with population of 0, totaling $1135 in contributions across five donors.
+### These addresses were listed as PO Boxes on receipts.
+#### Normalization by 100  people also creates a situation where zip 86003 w/ pop. of 3 has given nearly 37K, creating a big outlier, next nearest 1K
+normalized_az <- mutate(az_zcta,
+                        normalized_total=(contribution_receipt_amount/total_population)*100)
 
+#get the total raised per zcta
+az_totals <- normalized_az %>% 
+  group_by(ZCTA) %>% 
+  summarise(total_raised = sum(normalized_total))
 
-#TODO: figure out if this normalization was correct -- (contributions/zcta population)*10K
-normalized_az <- mutate(az_zcta, 
-                        normalize_population=(total_raised/total_population)*100)
-# write_csv(normalized_az, "output/normalized_az.csv")
+# write_csv(az_totals, "output/az_totals_yearend.csv")
 
+#round normalized_total to two decimals
+az_totals <- az_totals %>% 
+  mutate(total_raised=round(total_raised, digits=2))
+
+#removes the two Inf total raised, which are the zips that were listed above ... apparently they didn't get dropped before after all?
+az_totals <- az_totals %>%
+  filter_if(~is.numeric(.), all_vars(!is.infinite(.)))
 
 # download arizona sf data from tigris
-# az_sf <- zctas(starts_with = c("85", "86"))
 az_sf <- zctas(cb = FALSE, year = 2010, state = "AZ")
 
-
 # join that sf data with normalized_az df
-# map_data <- left_join(normalized_az, az_sf,
-#                       by=c("contributor_zip" = "ZCTA5CE10"))
+map_data <- geo_join(az_sf, az_totals, "ZCTA5CE10", "ZCTA")
 
-# write_csv(map_data, "output/az_map_data.csv") ## trying to export for qgis
+## trying to export for qgis in desperation
+write_csv(map_data, "output/az_map_data.csv")
 
-#TODO: map arizona zcta contributions
-# arizona_map <- ggplot(map_data) +
-#   geom_sf(data = map_data) +
-#   aes(fill= map_data$total_raised) +
-#   geom_sf(color="black")  +
-#   # scale_fill_manual(values = c("#FFFFFF", "#C9C5DB", "#938CB8", "#3E386D")) +
-#   theme_void() +
-#   labs(title="Mark Kelly's contributions by zcta per 10k", color='legend', fill='legend title')
-# arizona_map
+ggplot(az_sf) +
+  geom_sf()
 
 
-#TODO: pull state by state population data -- (state contributions/state populations)/100k
-
-
-
-#TODO: export out-of-state data for bar chart via graphics rig. this only requires top ten states and totals
+#TODO: learn how to do a spatial subset in order to have the state boundary of arizona as well as the zcta boundaries 
+## Also figure out how to get the colors right and maybe also to speed this up
+## or just give it up and figure out how to turn to qgis
+arizona_map <- ggplot(map_data) +
+  geom_sf(data = map_data) +
+  aes(fill= map_data$total_raised) +
+  geom_sf(color="black")  +
+  # scale_fill_manual(values = c( "#C9C5DB", "#938CB8", "#3E386D")) +
+  theme_void() +
+  labs(title="Mark Kelly's contributions by zcta per 100", color='legend', fill='legend title')
+arizona_map
