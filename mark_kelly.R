@@ -64,24 +64,6 @@ instate_funds <- rawContribs %>%
 instate_funds$contributor_zip <- as.character(instate_funds$contributor_zip)
 instate_funds$contributor_zip <- substr(instate_funds$contributor_zip, 1, 5)
 
-#TODO: think about breaking out-of-state funding for both candidates into a sep. script?
-#create a dataframe of out-of-state contributions
-# outstate_funds <- rawContribs %>% 
-#   select(report_type, 
-#          contributor_name,
-#          contributor_city,
-#          contributor_state,
-#          contributor_zip,
-#          contribution_receipt_amount,
-#          contribution_receipt_date) %>% 
-#   filter(contributor_state != "AZ")
-# #preserve zeroes of zipcodes, then chop last five numbers
-#   outstate_funds$contributor_zip <- as.character(outstate_funds$contributor_zip)
-#   outstate_funds$contributor_zip <- substr(outstate_funds$contributor_zip, 1, 5)
-
-# state_totals <- outstate_funds %>% 
-#   group_by(contributor_state) %>% 
-#   summarise(total_raised = sum(contribution_receipt_amount))
 
 ###############################      NOTE      #######################################
 ##                                                                                  ##
@@ -195,8 +177,6 @@ leaflet(data = cong_tot) %>%
 
 
 #### Stashing leaflet code here for further work this weekend
-
-
 #leaflet works much faster and it gives us a more interactive graphic, which i'm partial to.
 
 bins <- c(0, 100, 1000, 10000, 100000, 200000, Inf)
