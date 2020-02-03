@@ -153,7 +153,7 @@ arizona_map
 # write_csv(map_data, "output/az_map_data.csv") ## trying to export for qgis
 
 
-bins <- c(0, 1, 3, 6, 10, 31, Inf)
+bins <- c(0, 25, 50, 150, 250, Inf)
 pal1 <- colorBin(palette = c("#FFFFFF", "#C9C5DB","#05B69C", "#F9A51A", "#C73D49"), domain = map_data$total_raised_no_na, bins = bins)
 map <- leaflet(map_data) %>% addTiles()
 state_popup1 <- paste0("<strong> Zip: </strong>", 
