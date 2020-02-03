@@ -7,8 +7,8 @@ library(leaflet)
 library(censusapi)
 
 #load API keys from env file
-save_datagov_apikey(key = Sys.getenv("FEC_API_KEY"))
-census_key = Sys.getenv("CENSUS_API_KEY")
+save_datagov_apikey(key = "n3BB27dCbHpsI0BAIyYi5i4nMa3xJk9AXF7cG2Hc")
+census_key = Sys.getenv("6ca1427d5d740735f295c8fc411c95119b1100c9")
 
 #tell tigris we're working with shape files
 options(tigris_class = "sf")
@@ -89,7 +89,7 @@ population <- getCensus(name = "acs/acs5",
                         vintage = 2018,
                         vars = c("B01003_001E", "GEO_ID"),
                         region = "zip code tabulation area:*",
-                        key = census_key)
+                        key = "6ca1427d5d740735f295c8fc411c95119b1100c9")
 
 #rename population data column population$B01003_001E to "TOTAL_POPULATION"
 population <- rename(population, 
@@ -128,6 +128,10 @@ az_sf <- zctas(cb = FALSE, year = 2010, state = "AZ")
 # join that sf data with normalized_az df
 map_data <- geo_join(az_sf, az_totals, "ZCTA5CE10", "ZCTA")
 
+#and there's a few counties that have a total of 0 (their populations are a total of 27k residents), so we're going to replace those values with zeroes.We'll create a new column just in case
+map_data <- map_data %>% 
+  mutate(total_raised_no_na = replace_na(total_raised, 0))
+
 ## trying to export for qgis in desperation
 write_csv(map_data, "output/az_map_data.csv")
 
@@ -151,14 +155,14 @@ arizona_map
 # write_csv(map_data, "output/az_map_data.csv") ## trying to export for qgis
 
 
-bins <- c(0, 1000, 5000, 20000, 100000, 500000, 750000, Inf)
-pal1 <- colorBin("inferno", domain = cong_tot$total_raised_no_na, bins = bins)
-map <- leaflet(cong_tot) %>% addTiles()
-state_popup1 <- paste0("<strong> County: </strong>", 
-                       cong_tot$NAME, 
+bins <- c(0, 25, 50, 150, 250, Inf)
+pal1 <- colorBin(palette = c("#FFFFFF", "#C9C5DB","#05B69C", "#F9A51A", "#C73D49"), domain = map_data$total_raised_no_na, bins = bins)
+map <- leaflet(map_data) %>% addTiles()
+state_popup1 <- paste0("<strong> Zip: </strong>", 
+                       map_data$ZCTA5CE10, 
                        "<br><strong>Total Raised: </strong>", 
-                       cong_tot$total_raised_no_na)
-leaflet(data = cong_tot) %>%
+                       map_data$total_raised_no_na)
+leaflet(data = map_data) %>%
   addProviderTiles("CartoDB.Positron") %>%
   addPolygons(fillColor = ~pal1(total_raised_no_na), 
               fillOpacity = 0.8, 
