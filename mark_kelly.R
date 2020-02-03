@@ -7,8 +7,8 @@ library(leaflet)
 library(censusapi)
 
 #load API keys from env file
-save_datagov_apikey(key = "n3BB27dCbHpsI0BAIyYi5i4nMa3xJk9AXF7cG2Hc")
-census_key = Sys.getenv("6ca1427d5d740735f295c8fc411c95119b1100c9")
+save_datagov_apikey(key = Sys.getenv("FEC_API_KEY"))
+census_key = Sys.getenv("CENSUS_API_KEY")
 
 #tell tigris we're working with shape files
 options(tigris_class = "sf")
@@ -89,7 +89,9 @@ population <- getCensus(name = "acs/acs5",
                         vintage = 2018,
                         vars = c("B01003_001E", "GEO_ID"),
                         region = "zip code tabulation area:*",
-                        key = "6ca1427d5d740735f295c8fc411c95119b1100c9")
+                        key = census_key)
+
+
 
 #rename population data column population$B01003_001E to "TOTAL_POPULATION"
 population <- rename(population, 
