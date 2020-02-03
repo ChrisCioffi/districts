@@ -120,6 +120,8 @@ az_totals <- az_totals %>%
 az_totals <- az_totals %>%
   filter_if(~is.numeric(.), all_vars(!is.infinite(.)))
 
+write_csv(az_totals, "output/mark_kelly_normalized_zcta.csv")
+
 # download arizona sf data from tigris
 az_sf <- zctas(cb = FALSE, year = 2010, state = "AZ")
 
