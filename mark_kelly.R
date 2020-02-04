@@ -18,7 +18,8 @@ options(tigris_class = "sf")
 
 
 #pull the data we want from the API
-rawContribs <- search_candidates(name = c("KELLY, MARK"), 
+rawContribs1 <- #search_candidates(name = c("KELLY, MARK"), 
+                search_candidates(name = c("MCSALLY, MARTHA"),
                            election_year = "2020", 
                            office ="S",
                            candidate_status = "C",
@@ -202,3 +203,24 @@ leaflet(data = cong_tot) %>%
   addLegend("bottomright", pal = pal1, values = ~total_raised_no_na,
             title = "Total raised",
             labFormat = labelFormat(prefix = " "))
+
+
+
+###############################      NOTE      #######################################
+##                                                                                  ##
+##                                  Queries for analysis                            ##
+##                                                                                  ##
+######################################################################################  
+
+by_state <- rawContribs %>%
+  group_by(contributor_state) %>%
+  summarise(total_raised = sum(contribution_receipt_amount))
+
+by_city <- rawContribs %>%
+  group_by(contributor_city) %>%
+  summarise(total_raised = sum(contribution_receipt_amount))
+
+by_date <- rawContribs %>%
+  group_by(contribution_receipt_date) %>%
+  summarise(total_raised = sum(contribution_receipt_amount))
+
