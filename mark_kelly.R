@@ -95,8 +95,6 @@ population <- getCensus(name = "acs/acs5",
                         region = "zip code tabulation area:*",
                         key = census_key)
 
-
-
 #rename population data column population$B01003_001E to "TOTAL_POPULATION"
 population <- rename(population, 
                      total_population=B01003_001E) 
@@ -126,6 +124,8 @@ az_totals <- az_totals %>%
 az_totals <- az_totals %>%
   filter_if(~is.numeric(.), all_vars(!is.infinite(.)))
 
+write_csv(az_totals, "output/mark_kelly_normalized_zcta.csv")
+
 # download arizona sf data from tigris
 az_sf <- zctas(cb = FALSE, year = 2010, state = "AZ")
 
@@ -136,27 +136,6 @@ map_data <- geo_join(az_sf, az_totals, "ZCTA5CE10", "ZCTA")
 map_data <- map_data %>% 
   mutate(total_raised_no_na = replace_na(total_raised, 0))
 
-## trying to export for qgis in desperation
-write_csv(map_data, "output/az_map_data.csv")
-
-ggplot(az_sf) +
-  geom_sf()
-
-
-#TODO: learn how to do a spatial subset in order to have the state boundary of arizona as well as the zcta boundaries 
-## Also figure out how to get the colors right and maybe also to speed this up
-## or just give it up and figure out how to turn to qgis
-arizona_map <- ggplot(map_data) +
-  geom_sf(data = map_data) +
-  aes(fill= map_data$total_raised) +
-  geom_sf(color="black")  +
-  # scale_fill_manual(values = c( "#C9C5DB", "#938CB8", "#3E386D")) +
-  theme_void() +
-  labs(title="Mark Kelly's contributions by zcta per 100", color='legend', fill='legend title')
-arizona_map
-
-
-# write_csv(map_data, "output/az_map_data.csv") ## trying to export for qgis
 
 
 bins <- c(0, 25, 50, 150, 250, Inf)
@@ -244,4 +223,3 @@ by_quarter_money <- rawContribs %>%
 by_quarter_count <- rawContribs %>%
   group_by(report_type, name) %>%
   summarise(count = n())
-
