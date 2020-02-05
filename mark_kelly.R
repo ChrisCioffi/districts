@@ -7,7 +7,7 @@ library(leaflet)
 library(censusapi)
 
 #load API keys from env file
-save_datagov_apikey(Sys.getenv("FEC_API_KEY"))
+save_datagov_apikey(key = Sys.getenv("FEC_API_KEY"))
 census_key = Sys.getenv("CENSUS_API_KEY")
 
 #tell tigris we're working with shape files
@@ -18,7 +18,8 @@ options(tigris_class = "sf")
 
 
 #pull the data we want from the API
-rawContribs <- search_candidates(name = c("KELLY, MARK"), 
+rawContribs1 <- #search_candidates(name = c("KELLY, MARK"), 
+                search_candidates(name = c("MCSALLY, MARTHA"),
                            election_year = "2020", 
                            office ="S",
                            candidate_status = "C",
@@ -150,4 +151,57 @@ leaflet(data = map_data) %>%
               popup = state_popup1) %>%
   addLegend("bottomright", pal = pal1, values = ~total_raised_no_na,
             title = "Total raised",
+<<<<<<< HEAD
             labFormat = labelFormat(prefix = " "))
+=======
+            labFormat = labelFormat(prefix = " "))
+
+
+#TODO: pull state by state population data -- (state contributions/state populations)/100k
+
+
+
+#TODO: export out-of-state data for bar chart via graphics rig. this only requires top ten states and totals
+
+
+
+#### Stashing leaflet code here for further work this weekend
+#leaflet works much faster and it gives us a more interactive graphic, which i'm partial to.
+
+bins <- c(0, 100, 1000, 10000, 100000, 200000, Inf)
+pal1 <- colorBin(palette = c("#FFFFFF", "#C9C5DB","#05B69C", "#F9A51A", "#C73D49"), domain = cong_tot$total_raised_no_na, bins = bins) 
+map <- leaflet(cong_tot) %>% addTiles()
+state_popup1 <- paste0("<strong> District: </strong>", 
+                       cong_tot$ZCTA5CE10, 
+                       "<br><strong>Total Raised: </strong>", 
+                       cong_tot$total_raised_no_na)
+leaflet(data = cong_tot) %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addPolygons(fillColor = ~pal1(total_raised_no_na), 
+              fillOpacity = 0.8, 
+              color = "#BDBDC3", 
+              weight = 1, 
+              popup = state_popup1) %>%
+  addLegend("bottomright", pal = pal1, values = ~total_raised_no_na,
+            title = "Total raised",
+            labFormat = labelFormat(prefix = " "))
+
+
+
+###############################      NOTE      #######################################
+##                                                                                  ##
+##                                  Queries for analysis                            ##
+##                                                                                  ##
+######################################################################################  
+
+by_state <- rawContribs %>%
+  group_by(contributor_state) %>%
+  summarise(total_raised = sum(contribution_receipt_amount))
+
+by_city <- rawContribs %>%
+  group_by(contributor_city) %>%
+  summarise(total_raised = sum(contribution_receipt_amount))
+
+by_date <- rawContribs %>%
+  group_by(contribution_receipt_date) %>%
+  summarise(total_raised = sum(contribution_receipt_amount))
