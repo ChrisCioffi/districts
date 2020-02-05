@@ -17,9 +17,11 @@ options(tigris_class = "sf")
 `%notin%` <- Negate(`%in%`)
 
 
-#pull the data we want from the API
-rawContribs1 <- #search_candidates(name = c("KELLY, MARK"), 
-                search_candidates(name = c("MCSALLY, MARTHA"),
+
+#pull the data we want from the API  #these fields filters ensure we're pulling recent results, they're not clouded up with winred/actblue passthroughs and they're definitely from individuals
+rawContribs <- search_candidates(name = c("KELLY, MARK", "MCSALLY, MARTHA" ), 
+                                 # search_candidates(name = c("KELLY, MARK"), 
+                                 #search_candidates(name = c("MCSALLY, MARTHA"),
                            election_year = "2020", 
                            office ="S",
                            candidate_status = "C",
@@ -29,6 +31,7 @@ rawContribs1 <- #search_candidates(name = c("KELLY, MARK"),
   unnest_wider(committee, names_repair = "unique") %>% 
   select(schedule_type_full, 
          report_type, 
+         entity_type,
          line_number, 
          line_number_label, 
          contributor_state, 
@@ -48,7 +51,7 @@ rawContribs1 <- #search_candidates(name = c("KELLY, MARK"),
          name, 
          fec_election_type_desc, 
          memo_code) %>%
-filter(report_year > 2018 & line_number %in% "11AI" & memo_code %notin% "X" )
+filter(report_year > 2018 & line_number %in% "11AI" & memo_code %notin% "X" & is_individual == TRUE & entity_type %in% "IND")
 
 
 # create a dataframe of in-state contributions
@@ -212,15 +215,33 @@ leaflet(data = cong_tot) %>%
 ##                                                                                  ##
 ######################################################################################  
 
+
+#gets total number of money by state
 by_state <- rawContribs %>%
-  group_by(contributor_state) %>%
+  group_by(contributor_state, name) %>%
   summarise(total_raised = sum(contribution_receipt_amount))
 
+#gets count of contributors from each state and city
+by_contribs <- rawContribs %>%
+  group_by(contributor_state, contributor_city, name) %>%
+  summarise(count = n(contributor_name))
+
+#gets sum of total money raised by city
 by_city <- rawContribs %>%
-  group_by(contributor_city) %>%
+  group_by(contributor_city, name) %>%
   summarise(total_raised = sum(contribution_receipt_amount))
 
+#sums the amount of money by date
 by_date <- rawContribs %>%
-  group_by(contribution_receipt_date) %>%
+  group_by(contribution_receipt_date, name) %>%
   summarise(total_raised = sum(contribution_receipt_amount))
+
+#sums the amount of money by quarter
+by_quarter_money <- rawContribs %>%
+  group_by(report_type, name) %>%
+  summarise(total_raised = sum(contribution_receipt_amount))
+
+by_quarter_count <- rawContribs %>%
+  group_by(report_type, name) %>%
+  summarise(count = n())
 
