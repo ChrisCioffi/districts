@@ -7,8 +7,8 @@ library(leaflet)
 library(censusapi)
 
 #load API keys from env file
-save_datagov_apikey(key = "n3BB27dCbHpsI0BAIyYi5i4nMa3xJk9AXF7cG2Hc")
-census_key = Sys.getenv("6ca1427d5d740735f295c8fc411c95119b1100c9")
+save_datagov_apikey(Sys.getenv("FEC_API_KEY"))
+census_key = Sys.getenv("CENSUS_API_KEY")
 
 #tell tigris we're working with shape files
 options(tigris_class = "sf")
@@ -89,7 +89,7 @@ population <- getCensus(name = "acs/acs5",
                         vintage = 2018,
                         vars = c("B01003_001E", "GEO_ID"),
                         region = "zip code tabulation area:*",
-                        key = "6ca1427d5d740735f295c8fc411c95119b1100c9")
+                        key = census_key)
 
 #rename population data column population$B01003_001E to "TOTAL_POPULATION"
 population <- rename(population, 
@@ -132,27 +132,6 @@ map_data <- geo_join(az_sf, az_totals, "ZCTA5CE10", "ZCTA")
 map_data <- map_data %>% 
   mutate(total_raised_no_na = replace_na(total_raised, 0))
 
-## trying to export for qgis in desperation
-write_csv(map_data, "output/az_map_data.csv")
-
-ggplot(az_sf) +
-  geom_sf()
-
-
-#TODO: learn how to do a spatial subset in order to have the state boundary of arizona as well as the zcta boundaries 
-## Also figure out how to get the colors right and maybe also to speed this up
-## or just give it up and figure out how to turn to qgis
-arizona_map <- ggplot(map_data) +
-  geom_sf(data = map_data) +
-  aes(fill= map_data$total_raised) +
-  geom_sf(color="black")  +
-  # scale_fill_manual(values = c( "#C9C5DB", "#938CB8", "#3E386D")) +
-  theme_void() +
-  labs(title="Mark Kelly's contributions by zcta per 100", color='legend', fill='legend title')
-arizona_map
-
-
-# write_csv(map_data, "output/az_map_data.csv") ## trying to export for qgis
 
 
 bins <- c(0, 25, 50, 150, 250, Inf)
@@ -163,36 +142,6 @@ state_popup1 <- paste0("<strong> Zip: </strong>",
                        "<br><strong>Total Raised: </strong>", 
                        map_data$total_raised_no_na)
 leaflet(data = map_data) %>%
-  addProviderTiles("CartoDB.Positron") %>%
-  addPolygons(fillColor = ~pal1(total_raised_no_na), 
-              fillOpacity = 0.8, 
-              color = "#BDBDC3", 
-              weight = 1, 
-              popup = state_popup1) %>%
-  addLegend("bottomright", pal = pal1, values = ~total_raised_no_na,
-            title = "Total raised",
-            labFormat = labelFormat(prefix = " "))
-
-
-#TODO: pull state by state population data -- (state contributions/state populations)/100k
-
-
-
-#TODO: export out-of-state data for bar chart via graphics rig. this only requires top ten states and totals
-
-
-
-#### Stashing leaflet code here for further work this weekend
-#leaflet works much faster and it gives us a more interactive graphic, which i'm partial to.
-
-bins <- c(0, 100, 1000, 10000, 100000, 200000, Inf)
-pal1 <- colorBin(palette = c("#FFFFFF", "#C9C5DB","#05B69C", "#F9A51A", "#C73D49"), domain = cong_tot$total_raised_no_na, bins = bins) 
-map <- leaflet(cong_tot) %>% addTiles()
-state_popup1 <- paste0("<strong> District: </strong>", 
-                       cong_tot$ZCTA5CE10, 
-                       "<br><strong>Total Raised: </strong>", 
-                       cong_tot$total_raised_no_na)
-leaflet(data = cong_tot) %>%
   addProviderTiles("CartoDB.Positron") %>%
   addPolygons(fillColor = ~pal1(total_raised_no_na), 
               fillOpacity = 0.8, 
