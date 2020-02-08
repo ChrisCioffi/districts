@@ -53,32 +53,68 @@ apiContribs <- search_candidates(name = c("MCSALLY, MARTHA", "KELLY, MARK"),
            is_individual == TRUE & 
            entity_type %in% "IND")
 
+
+# create a dataframe of in-state contributions
+instate_funds <- apiContribs %>% 
+  select(report_type, 
+         contributor_name,
+         contributor_city,
+         contributor_state,
+         contributor_zip,
+         contribution_receipt_amount,
+         contribution_receipt_date) %>% 
+  filter(contributor_state=="AZ")
+#preserve zeroes of zipcodes, then chop last five numbers
+instate_funds$contributor_zip <- as.character(instate_funds$contributor_zip)
+instate_funds$contributor_zip <- substr(instate_funds$contributor_zip, 1, 5)
+
+# import zcta crosswalk csv, then join on zip codes
+# link for reference https://www.udsmapper.org/zcta-crosswalk.cfm
+crosswalk <- read_csv("data/zip_to_zcta_2019.csv")
+crosswalked_contribs <- left_join(instate_funds, crosswalk, by=c("contributor_zip" = "ZIP_CODE"))
+
+
+## run these to learn about the census api
+# geography <- listCensusMetadata(name = "acs/acs5", vintage = 2017, type = "geography")
+# variables <- listCensusMetadata(name = "acs/acs5", vintage = 2017, type = "variables")
+# apis <- listCensusApis()
+# call population data from the census (this calls population for all zctas)
+population <- getCensus(name = "acs/acs5",
+                        vintage = 2018,
+                        vars = c("B01003_001E", "GEO_ID"),
+                        region = "zip code tabulation area:*",
+                        key = census_key)
+
+#rename population data column population$B01003_001E to "TOTAL_POPULATION"
+population <- rename(population, 
+                     total_population=B01003_001E) 
+
+# create a new dataframe by joining population data to instate_funds data, dropping any zips that don't match.
+az_zcta <- left_join(crosswalked_contribs, population, by=c("ZCTA" = "zip_code_tabulation_area"))
+
+#normalize the totals column by population, then multiply by a number that seems to make sense for the population
+### NOTE: this dropped zips 85341 and 85726 with population of 0, totaling $1135 in contributions across five donors.
+### These addresses were listed as PO Boxes on receipts.
+#### Normalization by 100  people also creates a situation where zip 86003 w/ pop. of 3 has given nearly 37K, creating a big outlier, next nearest 1K
+normalized_az <- mutate(az_zcta,
+                        normalized_total=(contribution_receipt_amount/total_population)*100)
+
+#get the total raised per zcta
+az_totals <- normalized_az %>% 
+  group_by(ZCTA, name) %>% 
+  summarise(total_raised = sum(normalized_total))
+
+# write_csv(az_totals, "output/az_totals_yearend.csv")
+
+#round normalized_total to two decimals
+az_totals <- az_totals %>% 
+  mutate(total_raised=round(total_raised, digits=2))
+
+#removes the two Inf total raised, which are the zips that were listed above ... apparently they didn't get dropped before after all?
+az_totals <- az_totals %>%
+  filter_if(~is.numeric(.), all_vars(!is.infinite(.)))
+
 #separate candidates into their own dataframes
-mcsallyAPIdata <- filter(apiContribs, name=="MCSALLY FOR SENATE INC" )
-kellyAPIdata <- filter(apiContribs, name=="MARK KELLY FOR SENATE" )
+mcsally_instate <- filter(az_totals, name=="MCSALLY FOR SENATE INC" )
+kelly_instate <- filter(az_totals, name=="MARK KELLY FOR SENATE" )
 
-#pull in raw data from csvs
-mcsallyRaw <- read_csv("data/mcsally_2019_Q1_to_YE.csv",
-                       col_types = cols(contributor_organization_name = col_character()),
-                       trim_ws = FALSE)
-
-kellyRaw <- read_csv("data/kelly_2019_q1_to_ye.csv",
-                       col_types = cols(contributor_organization_name = col_character()),
-                       trim_ws = FALSE)
-
-
-#filter out what I don't want from those csvs
-mcsallyRaw <- filter(mcsallyRaw, filing_id == "YE", ## YE only
-                     entity_type == "IND", ## Independent contributions only
-                     contribution_purpose_descrip == "CONTRIBUTION") ## no transfers or other types of receipts
-
-kellyRaw <- filter(kellyRaw, filing_id == "YE", ## YE only
-                     entity_type %in% c("IND"), ## Independent contributions only
-                     memo_code %notin% "X") # prevents PACs, committees and other potential duplicates via earmarks
-
-# drop YE from Kelly's api data
-kellyAPIdata <-filter(kellyAPIdata, report_type != "YE")
-
-rename(mcsallyRaw)
-
-#bind the datasets together forever in holy matrimony
