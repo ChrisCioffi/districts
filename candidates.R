@@ -110,11 +110,43 @@ az_totals <- normalized_az %>%
 az_totals <- az_totals %>% 
   mutate(total_raised=round(total_raised, digits=2))
 
-#removes the two Inf total raised, which are the zips that were listed above ... apparently they didn't get dropped before after all?
+#removes Inf total raised, which are numbers that couldn't be computed (divisons by zero)
 az_totals <- az_totals %>%
   filter_if(~is.numeric(.), all_vars(!is.infinite(.)))
 
 #separate candidates into their own dataframes
 mcsally_instate <- filter(az_totals, name=="MCSALLY FOR SENATE INC" )
 kelly_instate <- filter(az_totals, name=="MARK KELLY FOR SENATE" )
+
+# export csvs for qgis
+write_csv(mcsally_instate, "output/mcsallyInstate_final.csv")
+write_csv(kelly_instate, "output/kellyInstate_final.csv")
+
+### Get out of state funds ###
+outstate_funds <- apiContribs %>%
+  select(name, 
+         report_type,
+         contributor_name,
+         contributor_city,
+         contributor_state,
+         contributor_zip,
+         contribution_receipt_amount,
+         contribution_receipt_date) %>%
+  filter(contributor_state != "AZ")
+#preserve zeroes of zipcodes, then chop last five numbers
+outstate_funds$contributor_zip <- as.character(outstate_funds$contributor_zip)
+outstate_funds$contributor_zip <- substr(outstate_funds$contributor_zip, 1, 5)
+
+state_totals <- outstate_funds %>%
+  group_by(contributor_state, name) %>%
+  summarise(total_raised = sum(contribution_receipt_amount)) %>% 
+  filter(contributor_state %notin% c("AE", "GU", "PR", "ZZ", "AP", "DC")) #filters out territories, other countries, etc. -- should we leave DC?
+
+#separate the candidates
+mcsally_outstate <- filter(state_totals, name=="MCSALLY FOR SENATE INC")
+kelly_outstate <- filter(state_totals, name=="MARK KELLY FOR SENATE")
+
+#export for graphics
+write_csv(mcsally_outstate, "output/mcsallyOutstate_final.csv")
+write_csv(kelly_outstate, "output/kellyOutstate_final.csv")
 
