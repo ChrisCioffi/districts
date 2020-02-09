@@ -150,3 +150,15 @@ kelly_outstate <- filter(state_totals, name=="MARK KELLY FOR SENATE")
 write_csv(mcsally_outstate, "output/mcsallyOutstate_final.csv")
 write_csv(kelly_outstate, "output/kellyOutstate_final.csv")
 
+
+### --- misc queries --- ###
+by_city <- instate_funds %>% ## arizona only
+  group_by(contributor_city, name) %>% 
+  summarise(total_raised = sum(contribution_receipt_amount))
+
+by_date <- apiContribs %>% 
+  group_by(contribution_receipt_date, name) %>% 
+  summarise(total_raised = sum(contribution_receipt_amount))
+
+##### ----- census data ---- ####
+# TODO: use instate funds here
