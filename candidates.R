@@ -116,6 +116,9 @@ kelly_instate <- filter(az_totals, name=="MARK KELLY FOR SENATE" )
 write_csv(mcsally_instate, "output/mcsallyInstate_final.csv")
 write_csv(kelly_instate, "output/kellyInstate_final.csv")
 
+#TODO: subtract his total raised from her total raised
+
+
 ### Get out of state funds ###
 outstate_funds <- apiContribs %>%
   select(name, 
@@ -134,7 +137,7 @@ outstate_funds$contributor_zip <- substr(outstate_funds$contributor_zip, 1, 5)
 state_totals <- outstate_funds %>%
   group_by(contributor_state, name) %>%
   summarise(total_raised = sum(contribution_receipt_amount)) %>% 
-  filter(contributor_state %notin% c("AE", "GU", "PR", "ZZ", "AP", "DC")) #filters out territories, other countries, etc. -- should we leave DC?
+  filter(contributor_state %notin% c("AE", "GU", "PR", "ZZ", "AP")) 
 
 #separate the candidates
 mcsally_outstate <- filter(state_totals, name=="MCSALLY FOR SENATE INC")
@@ -191,12 +194,12 @@ income_table <- rename(income_table,
 #use this per RL
 race_table <- getCensus(name="acs/acs5/profile",
                         vintage = 2018,
-                        vars = c("DP05_0070PE", #Percent Estimate!!HISPANIC OR LATINO AND RACE!!Total population	
-                                 "DP05_0071PE", #Percent Estimate!!HISPANIC OR LATINO AND RACE!!Total population!!Hispanic or Latino (of any race)	
-                                 "DP05_0077PE", #Percent Estimate!!HISPANIC OR LATINO AND RACE!!Total population!!Not Hispanic or Latino!!White alone	
-                                 "DP05_0078PE", #Percent Estimate!!HISPANIC OR LATINO AND RACE!!Total population!!Not Hispanic or Latino!!Black or African American alone	
-                                 "DP05_0079PE", #Percent Estimate!!HISPANIC OR LATINO AND RACE!!Total population!!Not Hispanic or Latino!!American Indian and Alaska Native alone	
-                                 "DP05_0080PE"), #Percent Estimate!!HISPANIC OR LATINO AND RACE!!Total population!!Not Hispanic or Latino!!Asian alone	
+                        vars = c("DP05_0070PE", 
+                                 "DP05_0071PE",	
+                                 "DP05_0077PE", 	
+                                 "DP05_0078PE", 
+                                 "DP05_0079PE", 
+                                 "DP05_0080PE"), 
                         region = "zip code tabulation area:*",
                         key = census_key)
 
@@ -212,5 +215,7 @@ race_table <- rename(race_table,
                      asian=DP05_0080PE) 
 
 
-
+write_csv(income_table, "output/income.csv")
+write_csv(race_table, "output/race.csv")
+write_csv(age_table, "output/age.csv")
 
