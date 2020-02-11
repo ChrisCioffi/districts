@@ -10,8 +10,6 @@ library(censusapi)
 save_datagov_apikey(key = Sys.getenv("FEC_API_KEY"))
 census_key = Sys.getenv("CENSUS_API_KEY")
 
-#tell tigris we're working with shape files
-options(tigris_class = "sf")
 
 ## create a function that does the opposite of `%in%`
 `%notin%` <- Negate(`%in%`)
@@ -56,7 +54,8 @@ apiContribs <- search_candidates(name = c("MCSALLY, MARTHA", "KELLY, MARK"),
 
 # create a dataframe of in-state contributions
 instate_funds <- apiContribs %>% 
-  select(report_type, 
+  select(name, 
+         report_type, 
          contributor_name,
          contributor_city,
          contributor_state,
@@ -73,11 +72,6 @@ instate_funds$contributor_zip <- substr(instate_funds$contributor_zip, 1, 5)
 crosswalk <- read_csv("data/zip_to_zcta_2019.csv")
 crosswalked_contribs <- left_join(instate_funds, crosswalk, by=c("contributor_zip" = "ZIP_CODE"))
 
-
-## run these to learn about the census api
-# geography <- listCensusMetadata(name = "acs/acs5", vintage = 2017, type = "geography")
-# variables <- listCensusMetadata(name = "acs/acs5", vintage = 2017, type = "variables")
-# apis <- listCensusApis()
 # call population data from the census (this calls population for all zctas)
 population <- getCensus(name = "acs/acs5",
                         vintage = 2018,
@@ -161,4 +155,62 @@ by_date <- apiContribs %>%
   summarise(total_raised = sum(contribution_receipt_amount))
 
 ##### ----- census data ---- ####
-# TODO: use instate funds here
+
+## run these to learn about the census api
+# geography <- listCensusMetadata(name = "acs/acs5", vintage = 2017, type = "geography")
+# variables <- listCensusMetadata(name = "acs/acs5", vintage = 2017, type = "variables")
+# apis <- listCensusApis()
+
+# get median age data from census
+age_table <- getCensus(name="acs/acs5",
+                       vintage = 2018,
+                       vars = c("B01002_001E"),
+                       region = "zip code tabulation area:*",
+                       key = census_key)
+
+#join to candidate data
+age_table <- left_join(az_totals, age_table, by=c("ZCTA" = "zip_code_tabulation_area"))
+
+#rename from census table name
+age_table <- rename(age_table,
+                median_age=B01002_001E) 
+
+#get median income data from census
+income_table <- getCensus(name="acs/acs5",
+                          vintage = 2018,
+                          vars = c("B19013_001E"),
+                          region = "zip code tabulation area:*",
+                          key = census_key)
+income_table <- left_join(az_totals, income_table, by=c("ZCTA" = "zip_code_tabulation_area"))
+
+#rename from census table name
+income_table <- rename(income_table,
+                       median_income=B19013_001E) 
+
+#get race data from census
+#use this per RL
+race_table <- getCensus(name="acs/acs5/profile",
+                        vintage = 2018,
+                        vars = c("DP05_0070PE", #Percent Estimate!!HISPANIC OR LATINO AND RACE!!Total population	
+                                 "DP05_0071PE", #Percent Estimate!!HISPANIC OR LATINO AND RACE!!Total population!!Hispanic or Latino (of any race)	
+                                 "DP05_0077PE", #Percent Estimate!!HISPANIC OR LATINO AND RACE!!Total population!!Not Hispanic or Latino!!White alone	
+                                 "DP05_0078PE", #Percent Estimate!!HISPANIC OR LATINO AND RACE!!Total population!!Not Hispanic or Latino!!Black or African American alone	
+                                 "DP05_0079PE", #Percent Estimate!!HISPANIC OR LATINO AND RACE!!Total population!!Not Hispanic or Latino!!American Indian and Alaska Native alone	
+                                 "DP05_0080PE"), #Percent Estimate!!HISPANIC OR LATINO AND RACE!!Total population!!Not Hispanic or Latino!!Asian alone	
+                        region = "zip code tabulation area:*",
+                        key = census_key)
+
+race_table <- left_join(az_totals, race_table, by=c("ZCTA" = "zip_code_tabulation_area"))
+
+#rename from census table names
+race_table <- rename(race_table,
+                     total_population=DP05_0070PE,
+                     hispanic_latino=DP05_0071PE,
+                     white=DP05_0077PE,
+                     black=DP05_0078PE,
+                     american_indian=DP05_0079PE,
+                     asian=DP05_0080PE) 
+
+
+
+
