@@ -156,6 +156,7 @@ write_csv(kelly_outstate, "output/kellyOutstate_final.csv")
 by_city <- instate_funds %>% ## arizona only
   group_by(contributor_city, name) %>% 
   summarise(total_raised = sum(contribution_receipt_amount))
+write_csv(by_city, "output/city_funding.csv")
 
 by_date <- apiContribs %>% 
   group_by(contribution_receipt_date, name) %>% 
