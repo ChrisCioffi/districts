@@ -86,10 +86,7 @@ population <- rename(population,
 # create a new dataframe by joining population data to instate_funds data, dropping any zips that don't match.
 az_zcta <- left_join(crosswalked_contribs, population, by=c("ZCTA" = "zip_code_tabulation_area"))
 
-#normalize the totals column by population, then multiply by a number that seems to make sense for the population
-### NOTE: this dropped zips 85341 and 85726 with population of 0, totaling $1135 in contributions across five donors.
-### These addresses were listed as PO Boxes on receipts.
-#### Normalization by 100  people also creates a situation where zip 86003 w/ pop. of 3 has given nearly 37K, creating a big outlier, next nearest 1K
+#normalize the totals column by population
 normalized_az <- mutate(az_zcta,
                         normalized_total=(contribution_receipt_amount/total_population)*100)
 
@@ -108,6 +105,15 @@ az_totals <- az_totals %>%
 az_totals <- az_totals %>%
   filter_if(~is.numeric(.), all_vars(!is.infinite(.)))
 
+
+#find the places where mcsally out-raised kelly
+candidate_comparison_az <-az_totals %>% 
+  spread(name, total_raised) %>% 
+  rename(mcsally_raised="MCSALLY FOR SENATE INC", 
+         kelly_raised="MARK KELLY FOR SENATE") %>% 
+  mutate(marthavsmark = sum(mcsally_raised-kelly_raised))
+write_csv(candidate_comparison_az, "output/candidate_fundraising_comparison.csv")
+
 #separate candidates into their own dataframes
 mcsally_instate <- filter(az_totals, name=="MCSALLY FOR SENATE INC" )
 kelly_instate <- filter(az_totals, name=="MARK KELLY FOR SENATE" )
@@ -115,8 +121,6 @@ kelly_instate <- filter(az_totals, name=="MARK KELLY FOR SENATE" )
 # export csvs for qgis
 write_csv(mcsally_instate, "output/mcsallyInstate_final.csv")
 write_csv(kelly_instate, "output/kellyInstate_final.csv")
-
-#TODO: subtract his total raised from her total raised
 
 
 ### Get out of state funds ###
@@ -128,8 +132,7 @@ outstate_funds <- apiContribs %>%
          contributor_state,
          contributor_zip,
          contribution_receipt_amount,
-         contribution_receipt_date) %>%
-  filter(contributor_state != "AZ")
+         contribution_receipt_date)
 #preserve zeroes of zipcodes, then chop last five numbers
 outstate_funds$contributor_zip <- as.character(outstate_funds$contributor_zip)
 outstate_funds$contributor_zip <- substr(outstate_funds$contributor_zip, 1, 5)
@@ -142,6 +145,7 @@ state_totals <- outstate_funds %>%
 #separate the candidates
 mcsally_outstate <- filter(state_totals, name=="MCSALLY FOR SENATE INC")
 kelly_outstate <- filter(state_totals, name=="MARK KELLY FOR SENATE")
+
 
 #export for graphics
 write_csv(mcsally_outstate, "output/mcsallyOutstate_final.csv")
@@ -218,4 +222,3 @@ race_table <- rename(race_table,
 write_csv(income_table, "output/income.csv")
 write_csv(race_table, "output/race.csv")
 write_csv(age_table, "output/age.csv")
-
