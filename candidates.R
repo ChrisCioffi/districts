@@ -15,7 +15,7 @@ census_key = Sys.getenv("CENSUS_API_KEY")
 `%notin%` <- Negate(`%in%`)
 
 #pull the data we want from the API
-apiContribs <- search_candidates(name = c("MCSALLY, MARTHA", "KELLY, MARK"),
+apiContribs <- search_candidates(name = c("KELLY, MARK","MCSALLY, MARTHA"),
                                  election_year = "2020", 
                                  office ="S",
                                  candidate_status = "C",
@@ -50,7 +50,6 @@ apiContribs <- search_candidates(name = c("MCSALLY, MARTHA", "KELLY, MARK"),
            memo_code %notin% "X" & 
            is_individual == TRUE & 
            entity_type %in% "IND")
-
 
 # create a dataframe of in-state contributions
 instate_funds <- apiContribs %>% 
@@ -222,3 +221,44 @@ race_table <- rename(race_table,
 write_csv(income_table, "output/income.csv")
 write_csv(race_table, "output/race.csv")
 write_csv(age_table, "output/age.csv")
+
+
+states <- apiContribs %>%
+  group_by(contributor_state, name) %>%
+  summarise(total_raised = sum(contribution_receipt_amount))
+
+county_donors <- apiContribs %>%
+  mutate(instate_outstate = ifelse(contributor_state %in% "AZ", "Arizona", "out of state")) %>%
+  select(name, report_type ,contributor_state, instate_outstate, contributor_city, contributor_zip, contributor_name, contribution_receipt_amount)
+
+in_out_state <- county_donors %>%
+  group_by(name, instate_outstate) %>%
+  summarise(total_raised = sum(contribution_receipt_amount))
+
+by_county <- county_donors %>%
+  group_by(name, contributor_city) %>%
+  summarise(total_raised = sum(contribution_receipt_amount))
+  
+#queries below were areas identified by Randy Leonard as areas north of Tucson and Phoenix that voted for trump but donated more to Kelly than McSally. 
+
+phoenix_area <- az_zcta %>%
+  group_by(name) %>%
+  filter( contributor_zip %in% c("85024",
+                                 "85027",
+                                 "85022",
+                                 "85083",
+                                 "85050",
+                                 "85306",
+                                 "85308",
+                                 "85310",
+                                 "85345",
+                                 "85381")) %>%
+ summarise(total_raised = sum(contribution_receipt_amount))
+
+oro_area <- az_zcta %>%
+  group_by(name) %>%
+  filter( contributor_zip %in% c("85737",
+                                 "85739",
+                                 "85742",
+                                 "85755")) %>%
+  summarise(total_raised = sum(contribution_receipt_amount))
