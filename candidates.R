@@ -66,14 +66,18 @@ instate_funds <- apiContribs %>%
 #preserve zeroes of zipcodes, then chop last five numbers
 instate_funds$contributor_zip <- as.character(instate_funds$contributor_zip)
 instate_funds$contributor_zip <- substr(instate_funds$contributor_zip, 1, 5)
+instate_funds$contributor_zip <- as.numeric(instate_funds$contributor_zip)
 
 # import zcta crosswalk csv, then join on zip codes
 # link for reference https://www.udsmapper.org/zcta-crosswalk.cfm
-crosswalk <- read_csv("data/zip_to_zcta_2019.csv")
+# some zips manually moved for population
+crosswalk <- read_csv("data/zip_to_zcta.csv")
 crosswalked_contribs <- left_join(instate_funds, crosswalk, by=c("contributor_zip" = "ZIP_CODE"))
 
-# filter out erroneous 00001 zip
-crosswalked_contribs <- filter(crosswalked_contribs, contributor_zip != "00001")
+# filter out erroneous 00001 zip that earlier code cuts down to just 1
+crosswalked_contribs <- filter(crosswalked_contribs, contributor_zip != "1")
+#convert back to character for later join compatibility 
+crosswalked_contribs$ZCTA <- as.character(crosswalked_contribs$ZCTA)
 
 # call population data from the census (this calls population for all zctas)
 population <- getCensus(name = "acs/acs5",
@@ -88,14 +92,7 @@ population <- rename(population,
 
 # create a new dataframe by joining population data to instate_funds data, dropping any zips that don't match.
 az_zcta <- left_join(crosswalked_contribs, population, by=c("ZCTA" = "zip_code_tabulation_area"))
-datatable(az_zcta)
 #write_csv(az_zcta, "output/march3/az_raw_contribs_population.csv")
-
-## move zero population zctas to their nearest neighbor. 
-az_zcta_movement <- az_zcta
-
-az_zcta_movement <- az_zcta_movement %>% 
-  mutate(az_zcta_movement$ZCTA = replace(az_zcta_movement$ZCTA, ZCTA == '85726', '85731'))
 
 #normalize the totals column by population
 normalized_az <- mutate(az_zcta,
@@ -113,13 +110,6 @@ az_totals <- normalized_az %>%
 #round normalized_total to two decimals
 az_totals <- az_totals %>% 
   mutate(total_raised=round(total_raised, digits=2))
-
-#removes Inf total raised, which are numbers that couldn't be computed (divisons by zero)
-## includes kelly zips 85341 and 85726 totaling $1135
-## and mcsally zip 85726 totaling $11,900 from three contributors
-az_totals <- az_totals %>%
-  filter_if(~is.numeric(.), all_vars(!is.infinite(.)))
-
 
 #find the places where mcsally out-raised kelly
 candidate_comparison_az <-az_totals %>% 

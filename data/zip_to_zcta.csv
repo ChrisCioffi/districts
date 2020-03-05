@@ -1,0 +1,525 @@
+ZIP_CODE,PO_NAME,STATE,ZIP_TYPE,ZCTA,zip_join_type
+85001,Phoenix,AZ,Post Office or large volume customer,85004,Spatial join to ZCTA
+85002,Phoenix,AZ,Post Office or large volume customer,85004,Spatial join to ZCTA
+85003,Phoenix,AZ,Zip Code Area,85003,Zip Matches ZCTA
+85004,Phoenix,AZ,Zip Code Area,85004,Zip Matches ZCTA
+85005,Phoenix,AZ,Post Office or large volume customer,85009,Spatial join to ZCTA
+85006,Phoenix,AZ,Zip Code Area,85006,Zip Matches ZCTA
+85007,Phoenix,AZ,Zip Code Area,85007,Zip Matches ZCTA
+85008,Phoenix,AZ,Zip Code Area,85008,Zip Matches ZCTA
+85009,Phoenix,AZ,Zip Code Area,85009,Zip Matches ZCTA
+85010,Phoenix,AZ,Post Office or large volume customer,85008,Spatial join to ZCTA
+85011,Phoenix,AZ,Post Office or large volume customer,85013,Spatial join to ZCTA
+85012,Phoenix,AZ,Zip Code Area,85012,Zip Matches ZCTA
+85013,Phoenix,AZ,Zip Code Area,85013,Zip Matches ZCTA
+85014,Phoenix,AZ,Zip Code Area,85014,Zip Matches ZCTA
+85015,Phoenix,AZ,Zip Code Area,85015,Zip Matches ZCTA
+85016,Phoenix,AZ,Zip Code Area,85016,Zip Matches ZCTA
+85017,Phoenix,AZ,Zip Code Area,85017,Zip Matches ZCTA
+85018,Phoenix,AZ,Zip Code Area,85018,Zip Matches ZCTA
+85019,Phoenix,AZ,Zip Code Area,85019,Zip Matches ZCTA
+85020,Phoenix,AZ,Zip Code Area,85020,Zip Matches ZCTA
+85021,Phoenix,AZ,Zip Code Area,85021,Zip Matches ZCTA
+85022,Phoenix,AZ,Zip Code Area,85022,Zip Matches ZCTA
+85023,Phoenix,AZ,Zip Code Area,85023,Zip Matches ZCTA
+85024,Phoenix,AZ,Zip Code Area,85024,Zip Matches ZCTA
+85026,Phoenix,AZ,Post Office or large volume customer,85008,Spatial join to ZCTA
+85027,Phoenix,AZ,Zip Code Area,85027,Zip Matches ZCTA
+85028,Phoenix,AZ,Zip Code Area,85028,Zip Matches ZCTA
+85029,Phoenix,AZ,Zip Code Area,85029,Zip Matches ZCTA
+85030,Phoenix,AZ,Post Office or large volume customer,85004,Spatial join to ZCTA
+85031,Phoenix,AZ,Zip Code Area,85031,Zip Matches ZCTA
+85032,Phoenix,AZ,Zip Code Area,85032,Zip Matches ZCTA
+85033,Phoenix,AZ,Zip Code Area,85033,Zip Matches ZCTA
+85034,Phoenix,AZ,Zip Code Area,85034,Zip Matches ZCTA
+85035,Phoenix,AZ,Zip Code Area,85035,Zip Matches ZCTA
+85036,Phoenix,AZ,Post Office or large volume customer,85034,Spatial join to ZCTA
+85037,Phoenix,AZ,Zip Code Area,85037,Zip Matches ZCTA
+85038,Phoenix,AZ,Post Office or large volume customer,85008,Spatial join to ZCTA
+85039,Phoenix,AZ,Post Office or large volume customer,85008,Spatial join to ZCTA
+85040,Phoenix,AZ,Zip Code Area,85040,Zip Matches ZCTA
+85041,Phoenix,AZ,Zip Code Area,85041,Zip Matches ZCTA
+85042,Phoenix,AZ,Zip Code Area,85042,Zip Matches ZCTA
+85043,Phoenix,AZ,Zip Code Area,85043,Zip Matches ZCTA
+85044,Phoenix,AZ,Zip Code Area,85044,Zip Matches ZCTA
+85045,Phoenix,AZ,Zip Code Area,85045,Zip Matches ZCTA
+85046,Phoenix,AZ,Post Office or large volume customer,85032,Spatial join to ZCTA
+85048,Phoenix,AZ,Zip Code Area,85048,Zip Matches ZCTA
+85050,Phoenix,AZ,Zip Code Area,85050,Zip Matches ZCTA
+85051,Phoenix,AZ,Zip Code Area,85051,Zip Matches ZCTA
+85053,Phoenix,AZ,Zip Code Area,85053,Zip Matches ZCTA
+85054,Phoenix,AZ,Zip Code Area,85054,Zip Matches ZCTA
+85060,Phoenix,AZ,Post Office or large volume customer,85018,Spatial join to ZCTA
+85061,Phoenix,AZ,Post Office or large volume customer,85017,Spatial join to ZCTA
+85062,Phoenix,AZ,Post Office or large volume customer,85008,Spatial join to ZCTA
+85063,Phoenix,AZ,Post Office or large volume customer,85031,Spatial join to ZCTA
+85064,Phoenix,AZ,Post Office or large volume customer,85016,Spatial join to ZCTA
+85065,Phoenix,AZ,Post Office or large volume customer,85034,Spatial join to ZCTA
+85066,Phoenix,AZ,Post Office or large volume customer,85042,Spatial join to ZCTA
+85067,Phoenix,AZ,Post Office or large volume customer,85013,Spatial join to ZCTA
+85068,Phoenix,AZ,Post Office or large volume customer,85020,Spatial join to ZCTA
+85069,Phoenix,AZ,Post Office or large volume customer,85021,Spatial join to ZCTA
+85070,Phoenix,AZ,Post Office or large volume customer,85048,Spatial join to ZCTA
+85071,Phoenix,AZ,Post Office or large volume customer,85029,Spatial join to ZCTA
+85072,Phoenix,AZ,Post Office or large volume customer,85008,Spatial join to ZCTA
+85073,Phoenix,AZ,Post Office or large volume customer,85008,Spatial join to ZCTA
+85074,Phoenix,AZ,Post Office or large volume customer,85034,Spatial join to ZCTA
+85075,Phoenix,AZ,Post Office or large volume customer,85033,Spatial join to ZCTA
+85076,Phoenix,AZ,Post Office or large volume customer,85044,Spatial join to ZCTA
+85078,Phoenix,AZ,Post Office or large volume customer,85032,Spatial join to ZCTA
+85079,Phoenix,AZ,Post Office or large volume customer,85017,Spatial join to ZCTA
+85080,Phoenix,AZ,Post Office or large volume customer,85027,Spatial join to ZCTA
+85082,Phoenix,AZ,Post Office or large volume customer,85008,Spatial join to ZCTA
+85083,Phoenix,AZ,Zip Code Area,85083,Zip Matches ZCTA
+85085,Phoenix,AZ,Zip Code Area,85085,Zip Matches ZCTA
+85086,Phoenix,AZ,Zip Code Area,85086,Zip Matches ZCTA
+85087,New River,AZ,Zip Code Area,85087,Zip Matches ZCTA
+85117,Apache Junction,AZ,Post Office or large volume customer,85119,Spatial join to ZCTA
+85118,Gold Canyon,AZ,Zip Code Area,85118,Zip Matches ZCTA
+85119,Apache Junction,AZ,Zip Code Area,85119,Zip Matches ZCTA
+85120,Apache Junction,AZ,Zip Code Area,85120,Zip Matches ZCTA
+85121,Bapchule,AZ,Post Office or large volume customer,85121,Zip Matches ZCTA
+85122,Casa Grande,AZ,Zip Code Area,85122,Zip Matches ZCTA
+85123,Arizona City,AZ,Zip Code Area,85123,Zip Matches ZCTA
+85127,Chandler Heights,AZ,Post Office or large volume customer,85142,Spatial join to ZCTA
+85128,Coolidge,AZ,Zip Code Area,85128,Zip Matches ZCTA
+85130,Casa Grande,AZ,Post Office or large volume customer,85122,Spatial join to ZCTA
+85131,Eloy,AZ,Zip Code Area,85131,Zip Matches ZCTA
+85132,Florence,AZ,Zip Code Area,85132,Zip Matches ZCTA
+85135,Hayden,AZ,Post Office or large volume customer,85135,Zip Matches ZCTA
+85137,Kearny,AZ,Zip Code Area,85137,Zip Matches ZCTA
+85138,Maricopa,AZ,Zip Code Area,85138,Zip Matches ZCTA
+85139,Maricopa,AZ,Zip Code Area,85139,Zip Matches ZCTA
+85140,San Tan Valley,AZ,Zip Code Area,85140,Zip Matches ZCTA
+85141,Picacho,AZ,Post Office or large volume customer,85141,Zip Matches ZCTA
+85142,Queen Creek,AZ,Zip Code Area,85142,Zip Matches ZCTA
+85143,San Tan Valley,AZ,Zip Code Area,85143,Zip Matches ZCTA
+85145,Red Rock,AZ,Zip Code Area,85145,Zip Matches ZCTA
+85147,Sacaton,AZ,Post Office or large volume customer,85147,Zip Matches ZCTA
+85172,Stanfield,AZ,Zip Code Area,85172,Zip Matches ZCTA
+85173,Superior,AZ,Zip Code Area,85173,Zip Matches ZCTA
+85178,Apache Junction,AZ,Post Office or large volume customer,85119,Spatial join to ZCTA
+85190,Tortilla Flat,AZ,Post Office or large volume customer,85119,Spatial join to ZCTA
+85191,Valley Farms,AZ,Post Office or large volume customer,85128,Spatial join to ZCTA
+85192,Winkelman,AZ,Zip Code Area,85192,Zip Matches ZCTA
+85193,Casa Grande,AZ,Zip Code Area,85193,Zip Matches ZCTA
+85194,Casa Grande,AZ,Zip Code Area,85194,Zip Matches ZCTA
+85201,Mesa,AZ,Zip Code Area,85201,Zip Matches ZCTA
+85202,Mesa,AZ,Zip Code Area,85202,Zip Matches ZCTA
+85203,Mesa,AZ,Zip Code Area,85203,Zip Matches ZCTA
+85204,Mesa,AZ,Zip Code Area,85204,Zip Matches ZCTA
+85205,Mesa,AZ,Zip Code Area,85205,Zip Matches ZCTA
+85206,Mesa,AZ,Zip Code Area,85206,Zip Matches ZCTA
+85207,Mesa,AZ,Zip Code Area,85207,Zip Matches ZCTA
+85208,Mesa,AZ,Zip Code Area,85208,Zip Matches ZCTA
+85209,Mesa,AZ,Zip Code Area,85209,Zip Matches ZCTA
+85210,Mesa,AZ,Zip Code Area,85210,Zip Matches ZCTA
+85211,Mesa,AZ,Post Office or large volume customer,85201,Spatial join to ZCTA
+85212,Mesa,AZ,Zip Code Area,85212,Zip Matches ZCTA
+85213,Mesa,AZ,Zip Code Area,85213,Zip Matches ZCTA
+85214,Mesa,AZ,Post Office or large volume customer,85213,Spatial join to ZCTA
+85215,Mesa,AZ,Zip Code Area,85215,Zip Matches ZCTA
+85216,Mesa,AZ,Post Office or large volume customer,85208,Spatial join to ZCTA
+85224,Chandler,AZ,Zip Code Area,85224,Zip Matches ZCTA
+85225,Chandler,AZ,Zip Code Area,85225,Zip Matches ZCTA
+85226,Chandler,AZ,Zip Code Area,85226,Zip Matches ZCTA
+85233,Gilbert,AZ,Zip Code Area,85233,Zip Matches ZCTA
+85234,Gilbert,AZ,Zip Code Area,85234,Zip Matches ZCTA
+85236,Higley,AZ,Post Office or large volume customer,85296,Spatial join to ZCTA
+85244,Chandler,AZ,Post Office or large volume customer,85225,Spatial join to ZCTA
+85246,Chandler,AZ,Post Office or large volume customer,85224,Spatial join to ZCTA
+85248,Chandler,AZ,Zip Code Area,85248,Zip Matches ZCTA
+85249,Chandler,AZ,Zip Code Area,85249,Zip Matches ZCTA
+85250,Scottsdale,AZ,Zip Code Area,85250,Zip Matches ZCTA
+85251,Scottsdale,AZ,Zip Code Area,85251,Zip Matches ZCTA
+85252,Scottsdale,AZ,Post Office or large volume customer,85257,Spatial join to ZCTA
+85253,Paradise Valley,AZ,Zip Code Area,85253,Zip Matches ZCTA
+85254,Scottsdale,AZ,Zip Code Area,85254,Zip Matches ZCTA
+85255,Scottsdale,AZ,Zip Code Area,85255,Zip Matches ZCTA
+85256,Scottsdale,AZ,Zip Code Area,85256,Zip Matches ZCTA
+85257,Scottsdale,AZ,Zip Code Area,85257,Zip Matches ZCTA
+85258,Scottsdale,AZ,Zip Code Area,85258,Zip Matches ZCTA
+85259,Scottsdale,AZ,Zip Code Area,85259,Zip Matches ZCTA
+85260,Scottsdale,AZ,Zip Code Area,85260,Zip Matches ZCTA
+85261,Scottsdale,AZ,Post Office or large volume customer,85258,Spatial join to ZCTA
+85262,Scottsdale,AZ,Zip Code Area,85262,Zip Matches ZCTA
+85263,Rio Verde,AZ,Zip Code Area,85263,Zip Matches ZCTA
+85264,Fort McDowell,AZ,Zip Code Area,85264,Zip Matches ZCTA
+85266,Scottsdale,AZ,Zip Code Area,85266,Zip Matches ZCTA
+85267,Scottsdale,AZ,Post Office or large volume customer,85260,Spatial join to ZCTA
+85268,Fountain Hills,AZ,Zip Code Area,85268,Zip Matches ZCTA
+85269,Fountain Hills,AZ,Post Office or large volume customer,85268,Spatial join to ZCTA
+85271,Scottsdale,AZ,Post Office or large volume customer,85257,Spatial join to ZCTA
+85274,Mesa,AZ,Post Office or large volume customer,85202,Spatial join to ZCTA
+85275,Mesa,AZ,Post Office or large volume customer,85213,Spatial join to ZCTA
+85277,Mesa,AZ,Post Office or large volume customer,85215,Spatial join to ZCTA
+85280,Tempe,AZ,Post Office or large volume customer,85281,Spatial join to ZCTA
+85281,Tempe,AZ,Zip Code Area,85281,Zip Matches ZCTA
+85282,Tempe,AZ,Zip Code Area,85282,Zip Matches ZCTA
+85283,Tempe,AZ,Zip Code Area,85283,Zip Matches ZCTA
+85284,Tempe,AZ,Zip Code Area,85284,Zip Matches ZCTA
+85285,Tempe,AZ,Post Office or large volume customer,85282,Spatial join to ZCTA
+85286,Chandler,AZ,Zip Code Area,85286,Zip Matches ZCTA
+85287,Tempe,AZ,Zip Code Area,85281,Spatial join to ZCTA
+85295,Gilbert,AZ,Zip Code Area,85295,Zip Matches ZCTA
+85296,Gilbert,AZ,Zip Code Area,85296,Zip Matches ZCTA
+85297,Gilbert,AZ,Zip Code Area,85297,Zip Matches ZCTA
+85298,Gilbert,AZ,Zip Code Area,85298,Zip Matches ZCTA
+85299,Gilbert,AZ,Post Office or large volume customer,85296,Spatial join to ZCTA
+85301,Glendale,AZ,Zip Code Area,85301,Zip Matches ZCTA
+85302,Glendale,AZ,Zip Code Area,85302,Zip Matches ZCTA
+85303,Glendale,AZ,Zip Code Area,85303,Zip Matches ZCTA
+85304,Glendale,AZ,Zip Code Area,85304,Zip Matches ZCTA
+85305,Glendale,AZ,Zip Code Area,85305,Zip Matches ZCTA
+85306,Glendale,AZ,Zip Code Area,85306,Zip Matches ZCTA
+85307,Glendale,AZ,Zip Code Area,85307,Zip Matches ZCTA
+85308,Glendale,AZ,Zip Code Area,85308,Zip Matches ZCTA
+85309,Luke Air Force Base,AZ,Zip Code Area,85309,Zip Matches ZCTA
+85310,Glendale,AZ,Zip Code Area,85310,Zip Matches ZCTA
+85311,Glendale,AZ,Post Office or large volume customer,85301,Spatial join to ZCTA
+85312,Glendale,AZ,Post Office or large volume customer,85302,Spatial join to ZCTA
+85318,Glendale,AZ,Post Office or large volume customer,85308,Spatial join to ZCTA
+85320,Aguila,AZ,Post Office or large volume customer,85320,Zip Matches ZCTA
+85321,Ajo,AZ,Zip Code Area,85321,Zip Matches ZCTA
+85322,Arlington,AZ,Zip Code Area,85322,Zip Matches ZCTA
+85323,Avondale,AZ,Zip Code Area,85323,Zip Matches ZCTA
+85324,Black Canyon City,AZ,Zip Code Area,85324,Zip Matches ZCTA
+85325,Bouse,AZ,Zip Code Area,85325,Zip Matches ZCTA
+85326,Buckeye,AZ,Zip Code Area,85326,Zip Matches ZCTA
+85327,Cave Creek,AZ,Post Office or large volume customer,85331,Spatial join to ZCTA
+85328,Cibola,AZ,Zip Code Area,85328,Zip Matches ZCTA
+85329,Cashion,AZ,Post Office or large volume customer,85323,Spatial join to ZCTA
+85331,Cave Creek,AZ,Zip Code Area,85331,Zip Matches ZCTA
+85332,Congress,AZ,Zip Code Area,85332,Zip Matches ZCTA
+85333,Dateland,AZ,Zip Code Area,85333,Zip Matches ZCTA
+85334,Ehrenberg,AZ,Post Office or large volume customer,85334,Zip Matches ZCTA
+85335,El Mirage,AZ,Zip Code Area,85335,Zip Matches ZCTA
+85336,Gadsden,AZ,Post Office or large volume customer,85336,Zip Matches ZCTA
+85337,Gila Bend,AZ,Zip Code Area,85337,Zip Matches ZCTA
+85338,Goodyear,AZ,Zip Code Area,85338,Zip Matches ZCTA
+85339,Laveen,AZ,Zip Code Area,85339,Zip Matches ZCTA
+85340,Litchfield Park,AZ,Zip Code Area,85340,Zip Matches ZCTA
+85341,Lukeville,AZ,Zip Code Area,85321,Zip manually moved for population
+85342,Morristown,AZ,Zip Code Area,85342,Zip Matches ZCTA
+85343,Palo Verde,AZ,Zip Code Area,85343,Zip Matches ZCTA
+85344,Parker,AZ,Zip Code Area,85344,Zip Matches ZCTA
+85345,Peoria,AZ,Zip Code Area,85345,Zip Matches ZCTA
+85346,Quartzsite,AZ,Zip Code Area,85346,Zip Matches ZCTA
+85347,Roll,AZ,Zip Code Area,85347,Zip Matches ZCTA
+85348,Salome,AZ,Zip Code Area,85348,Zip Matches ZCTA
+85349,San Luis,AZ,Zip Code Area,85349,Zip Matches ZCTA
+85350,Somerton,AZ,Zip Code Area,85350,Zip Matches ZCTA
+85351,Sun City,AZ,Zip Code Area,85351,Zip Matches ZCTA
+85352,Tacna,AZ,Post Office or large volume customer,85352,Zip Matches ZCTA
+85353,Tolleson,AZ,Zip Code Area,85353,Zip Matches ZCTA
+85354,Tonopah,AZ,Zip Code Area,85354,Zip Matches ZCTA
+85355,Waddell,AZ,Zip Code Area,85355,Zip Matches ZCTA
+85356,Wellton,AZ,Zip Code Area,85356,Zip Matches ZCTA
+85357,Wenden,AZ,Post Office or large volume customer,85357,Zip Matches ZCTA
+85358,Wickenburg,AZ,Post Office or large volume customer,85390,Spatial join to ZCTA
+85359,Quartzsite,AZ,Post Office or large volume customer,85346,Spatial join to ZCTA
+85360,Wikieup,AZ,Post Office or large volume customer,85360,Zip Matches ZCTA
+85361,Wittmann,AZ,Zip Code Area,85361,Zip Matches ZCTA
+85362,Yarnell,AZ,Zip Code Area,85362,Zip Matches ZCTA
+85363,Youngtown,AZ,Zip Code Area,85363,Zip Matches ZCTA
+85364,Yuma,AZ,Zip Code Area,85364,Zip Matches ZCTA
+85365,Yuma,AZ,Zip Code Area,85365,Zip Matches ZCTA
+85366,Yuma,AZ,Post Office or large volume customer,85364,Spatial join to ZCTA
+85367,Yuma,AZ,Zip Code Area,85367,Zip Matches ZCTA
+85369,Yuma,AZ,Post Office or large volume customer,85364,Spatial join to ZCTA
+85371,Poston,AZ,Post Office or large volume customer,85371,Zip Matches ZCTA
+85372,Sun City,AZ,Post Office or large volume customer,85373,Spatial join to ZCTA
+85373,Sun City,AZ,Zip Code Area,85373,Zip Matches ZCTA
+85374,Surprise,AZ,Zip Code Area,85374,Zip Matches ZCTA
+85375,Sun City West,AZ,Zip Code Area,85375,Zip Matches ZCTA
+85376,Sun City West,AZ,Post Office or large volume customer,85375,Spatial join to ZCTA
+85377,Carefree,AZ,Zip Code Area,85377,Zip Matches ZCTA
+85378,Surprise,AZ,Zip Code Area,85374,Spatial join to ZCTA
+85379,Surprise,AZ,Zip Code Area,85379,Zip Matches ZCTA
+85380,Peoria,AZ,Post Office or large volume customer,85345,Spatial join to ZCTA
+85381,Peoria,AZ,Zip Code Area,85381,Zip Matches ZCTA
+85382,Peoria,AZ,Zip Code Area,85382,Zip Matches ZCTA
+85383,Peoria,AZ,Zip Code Area,85383,Zip Matches ZCTA
+85385,Peoria,AZ,Post Office or large volume customer,85381,Spatial join to ZCTA
+85387,Surprise,AZ,Zip Code Area,85387,Zip Matches ZCTA
+85388,Surprise,AZ,Zip Code Area,85388,Zip Matches ZCTA
+85390,Wickenburg,AZ,Zip Code Area,85390,Zip Matches ZCTA
+85392,Avondale,AZ,Zip Code Area,85392,Zip Matches ZCTA
+85395,Goodyear,AZ,Zip Code Area,85395,Zip Matches ZCTA
+85396,Buckeye,AZ,Zip Code Area,85396,Zip Matches ZCTA
+85501,Globe,AZ,Zip Code Area,85501,Zip Matches ZCTA
+85502,Globe,AZ,Post Office or large volume customer,85501,Spatial join to ZCTA
+85530,Bylas,AZ,Zip Code Area,85530,Zip Matches ZCTA
+85531,Central,AZ,Post Office or large volume customer,85531,Zip Matches ZCTA
+85532,Claypool,AZ,Post Office or large volume customer,85539,Spatial join to ZCTA
+85533,Clifton,AZ,Zip Code Area,85533,Zip Matches ZCTA
+85534,Duncan,AZ,Zip Code Area,85534,Zip Matches ZCTA
+85535,Eden,AZ,Zip Code Area,85535,Zip Matches ZCTA
+85536,Fort Thomas,AZ,Post Office or large volume customer,85536,Zip Matches ZCTA
+85539,Miami,AZ,Zip Code Area,85539,Zip Matches ZCTA
+85540,Morenci,AZ,Zip Code Area,85540,Zip Matches ZCTA
+85541,Payson,AZ,Zip Code Area,85541,Zip Matches ZCTA
+85542,Peridot,AZ,Zip Code Area,85542,Zip Matches ZCTA
+85543,Pima,AZ,Zip Code Area,85543,Zip Matches ZCTA
+85544,Pine,AZ,Zip Code Area,85544,Zip Matches ZCTA
+85545,Roosevelt,AZ,Zip Code Area,85545,Zip Matches ZCTA
+85546,Safford,AZ,Zip Code Area,85546,Zip Matches ZCTA
+85547,Payson,AZ,Post Office or large volume customer,85541,Spatial join to ZCTA
+85548,Safford,AZ,Post Office or large volume customer,85546,Spatial join to ZCTA
+85550,San Carlos,AZ,Zip Code Area,85550,Zip Matches ZCTA
+85551,Solomon,AZ,Post Office or large volume customer,85551,Zip Matches ZCTA
+85552,Thatcher,AZ,Zip Code Area,85552,Zip Matches ZCTA
+85553,Tonto Basin,AZ,Zip Code Area,85553,Zip Matches ZCTA
+85554,Young,AZ,Zip Code Area,85554,Zip Matches ZCTA
+85601,Arivaca,AZ,Zip Code Area,85601,Zip Matches ZCTA
+85602,Benson,AZ,Zip Code Area,85602,Zip Matches ZCTA
+85603,Bisbee,AZ,Zip Code Area,85603,Zip Matches ZCTA
+85605,Bowie,AZ,Zip Code Area,85605,Zip Matches ZCTA
+85606,Cochise,AZ,Zip Code Area,85606,Zip Matches ZCTA
+85607,Douglas,AZ,Zip Code Area,85607,Zip Matches ZCTA
+85608,Douglas,AZ,Post Office or large volume customer,85608,Zip Matches ZCTA
+85609,Dragoon,AZ,Zip Code Area,85609,Zip Matches ZCTA
+85610,Elfrida,AZ,Zip Code Area,85610,Zip Matches ZCTA
+85611,Elgin,AZ,Zip Code Area,85611,Zip Matches ZCTA
+85613,Fort Huachuca,AZ,Zip Code Area,85613,Zip Matches ZCTA
+85614,Green Valley,AZ,Zip Code Area,85614,Zip Matches ZCTA
+85615,Hereford,AZ,Zip Code Area,85615,Zip Matches ZCTA
+85616,Huachuca City,AZ,Zip Code Area,85616,Zip Matches ZCTA
+85617,Mc Neal,AZ,Zip Code Area,85617,Zip Matches ZCTA
+85618,Mammoth,AZ,Zip Code Area,85618,Zip Matches ZCTA
+85619,Mount Lemmon,AZ,Zip Code Area,85619,Zip Matches ZCTA
+85620,Naco,AZ,Post Office or large volume customer,85620,Zip Matches ZCTA
+85621,Nogales,AZ,Zip Code Area,85621,Zip Matches ZCTA
+85622,Green Valley,AZ,Zip Code Area,85622,Zip Matches ZCTA
+85623,Oracle,AZ,Zip Code Area,85623,Zip Matches ZCTA
+85624,Patagonia,AZ,Zip Code Area,85624,Zip Matches ZCTA
+85625,Pearce,AZ,Zip Code Area,85625,Zip Matches ZCTA
+85626,Pirtleville,AZ,Post Office or large volume customer,85626,Zip Matches ZCTA
+85627,Pomerene,AZ,Post Office or large volume customer,85627,Zip Matches ZCTA
+85628,Nogales,AZ,Post Office or large volume customer,85621,Spatial join to ZCTA
+85629,Sahuarita,AZ,Zip Code Area,85629,Zip Matches ZCTA
+85630,Saint David,AZ,Zip Code Area,85630,Zip Matches ZCTA
+85631,San Manuel,AZ,Zip Code Area,85631,Zip Matches ZCTA
+85632,San Simon,AZ,Zip Code Area,85632,Zip Matches ZCTA
+85633,Sasabe,AZ,Post Office or large volume customer,85633,Zip Matches ZCTA
+85634,Sells,AZ,Zip Code Area,85634,Zip Matches ZCTA
+85635,Sierra Vista,AZ,Zip Code Area,85635,Zip Matches ZCTA
+85636,Sierra Vista,AZ,Post Office or large volume customer,85635,Spatial join to ZCTA
+85637,Sonoita,AZ,Zip Code Area,85637,Zip Matches ZCTA
+85638,Tombstone,AZ,Zip Code Area,85638,Zip Matches ZCTA
+85639,Topawa,AZ,Post Office or large volume customer,85634,Spatial join to ZCTA
+85640,Tumacacori,AZ,Zip Code Area,85640,Zip Matches ZCTA
+85641,Vail,AZ,Zip Code Area,85641,Zip Matches ZCTA
+85643,Willcox,AZ,Zip Code Area,85643,Zip Matches ZCTA
+85644,Willcox,AZ,Post Office or large volume customer,85643,Spatial join to ZCTA
+85645,Amado,AZ,Zip Code Area,85645,Zip Matches ZCTA
+85646,Tubac,AZ,Zip Code Area,85646,Zip Matches ZCTA
+85648,Rio Rico,AZ,Zip Code Area,85648,Zip Matches ZCTA
+85650,Sierra Vista,AZ,Zip Code Area,85650,Zip Matches ZCTA
+85652,Cortaro,AZ,Post Office or large volume customer,85742,Spatial join to ZCTA
+85653,Marana,AZ,Zip Code Area,85653,Zip Matches ZCTA
+85654,Rillito,AZ,Post Office or large volume customer,85654,Zip Matches ZCTA
+85655,Douglas,AZ,Post Office or large volume customer,85607,Spatial join to ZCTA
+85658,Marana,AZ,Zip Code Area,85658,Zip Matches ZCTA
+85670,Fort Huachuca,AZ,Post Office or large volume customer,85635,Spatial join to ZCTA
+85671,Sierra Vista,AZ,Post Office or large volume customer,85635,Spatial join to ZCTA
+85701,Tucson,AZ,Zip Code Area,85701,Zip Matches ZCTA
+85702,Tucson,AZ,Post Office or large volume customer,85701,Spatial join to ZCTA
+85703,Tucson,AZ,Post Office or large volume customer,85705,Spatial join to ZCTA
+85704,Tucson,AZ,Zip Code Area,85704,Zip Matches ZCTA
+85705,Tucson,AZ,Zip Code Area,85705,Zip Matches ZCTA
+85706,Tucson,AZ,Zip Code Area,85706,Zip Matches ZCTA
+85707,Tucson,AZ,Zip Code Area,85707,Zip Matches ZCTA
+85708,Tucson,AZ,Zip Code Area,85708,Zip Matches ZCTA
+85709,Tucson,AZ,Zip Code Area,85745,Spatial join to ZCTA
+85710,Tucson,AZ,Zip Code Area,85710,Zip Matches ZCTA
+85711,Tucson,AZ,Zip Code Area,85711,Zip Matches ZCTA
+85712,Tucson,AZ,Zip Code Area,85712,Zip Matches ZCTA
+85713,Tucson,AZ,Zip Code Area,85713,Zip Matches ZCTA
+85714,Tucson,AZ,Zip Code Area,85714,Zip Matches ZCTA
+85715,Tucson,AZ,Zip Code Area,85715,Zip Matches ZCTA
+85716,Tucson,AZ,Zip Code Area,85716,Zip Matches ZCTA
+85717,Tucson,AZ,Post Office or large volume customer,85719,Spatial join to ZCTA
+85718,Tucson,AZ,Zip Code Area,85718,Zip Matches ZCTA
+85719,Tucson,AZ,Zip Code Area,85719,Zip Matches ZCTA
+85720,Tucson,AZ,Post Office or large volume customer,85701,Spatial join to ZCTA
+85721,Tucson,AZ,Zip Code Area,85719,Spatial join to ZCTA
+85722,Tucson,AZ,Post Office or large volume customer,85719,Spatial join to ZCTA
+85723,Tucson,AZ,Post Office or large volume customer,85723,Zip Matches ZCTA
+85724,Tucson,AZ,Post Office or large volume customer,85724,Zip Matches ZCTA
+85725,Tucson,AZ,Post Office or large volume customer,85713,Spatial join to ZCTA
+85726,Tucson,AZ,Post Office or large volume customer,85713,Zip manually moved for population
+85728,Tucson,AZ,Post Office or large volume customer,85718,Spatial join to ZCTA
+85730,Tucson,AZ,Zip Code Area,85730,Zip Matches ZCTA
+85731,Tucson,AZ,Post Office or large volume customer,85710,Spatial join to ZCTA
+85732,Tucson,AZ,Post Office or large volume customer,85711,Spatial join to ZCTA
+85733,Tucson,AZ,Post Office or large volume customer,85719,Spatial join to ZCTA
+85734,Tucson,AZ,Post Office or large volume customer,85756,Spatial join to ZCTA
+85735,Tucson,AZ,Zip Code Area,85735,Zip Matches ZCTA
+85736,Tucson,AZ,Zip Code Area,85736,Zip Matches ZCTA
+85737,Tucson,AZ,Zip Code Area,85737,Zip Matches ZCTA
+85738,Catalina,AZ,Post Office or large volume customer,85739,Spatial join to ZCTA
+85739,Tucson,AZ,Zip Code Area,85739,Zip Matches ZCTA
+85740,Tucson,AZ,Post Office or large volume customer,85704,Spatial join to ZCTA
+85741,Tucson,AZ,Zip Code Area,85741,Zip Matches ZCTA
+85742,Tucson,AZ,Zip Code Area,85742,Zip Matches ZCTA
+85743,Tucson,AZ,Zip Code Area,85743,Zip Matches ZCTA
+85744,Tucson,AZ,Post Office or large volume customer,85747,Spatial join to ZCTA
+85745,Tucson,AZ,Zip Code Area,85745,Zip Matches ZCTA
+85746,Tucson,AZ,Zip Code Area,85746,Zip Matches ZCTA
+85747,Tucson,AZ,Zip Code Area,85747,Zip Matches ZCTA
+85748,Tucson,AZ,Zip Code Area,85748,Zip Matches ZCTA
+85749,Tucson,AZ,Zip Code Area,85749,Zip Matches ZCTA
+85750,Tucson,AZ,Zip Code Area,85750,Zip Matches ZCTA
+85751,Tucson,AZ,Post Office or large volume customer,85715,Spatial join to ZCTA
+85752,Tucson,AZ,Post Office or large volume customer,85741,Spatial join to ZCTA
+85754,Tucson,AZ,Post Office or large volume customer,85745,Spatial join to ZCTA
+85755,Tucson,AZ,Zip Code Area,85755,Zip Matches ZCTA
+85756,Tucson,AZ,Zip Code Area,85756,Zip Matches ZCTA
+85757,Tucson,AZ,Zip Code Area,85757,Zip Matches ZCTA
+85775,Tucson,AZ,Post Office or large volume customer,85701,Spatial join to ZCTA
+85901,Show Low,AZ,Zip Code Area,85901,Zip Matches ZCTA
+85902,Show Low,AZ,Post Office or large volume customer,85901,Spatial join to ZCTA
+85911,Cibecue,AZ,Post Office or large volume customer,85911,Zip Matches ZCTA
+85912,White Mountain Lake,AZ,Post Office or large volume customer,85912,Zip Matches ZCTA
+85920,Alpine,AZ,Zip Code Area,85920,Zip Matches ZCTA
+85922,Blue,AZ,Zip Code Area,85922,Zip Matches ZCTA
+85923,Clay Springs,AZ,Post Office or large volume customer,85923,Zip Matches ZCTA
+85924,Concho,AZ,Zip Code Area,85924,Zip Matches ZCTA
+85925,Eagar,AZ,Zip Code Area,85925,Zip Matches ZCTA
+85926,Fort Apache,AZ,Post Office or large volume customer,85926,Zip Matches ZCTA
+85927,Greer,AZ,Post Office or large volume customer,85927,Zip Matches ZCTA
+85928,Heber,AZ,Zip Code Area,85928,Zip Matches ZCTA
+85929,Lakeside,AZ,Zip Code Area,85929,Zip Matches ZCTA
+85930,McNary,AZ,Post Office or large volume customer,85930,Zip Matches ZCTA
+85931,Forest Lakes,AZ,Post Office or large volume customer,85931,Zip Matches ZCTA
+85932,Nutrioso,AZ,Post Office or large volume customer,85932,Zip Matches ZCTA
+85933,Overgaard,AZ,Zip Code Area,85933,Zip Matches ZCTA
+85934,Pinedale,AZ,Post Office or large volume customer,85934,Zip Matches ZCTA
+85935,Pinetop,AZ,Zip Code Area,85935,Zip Matches ZCTA
+85936,Saint Johns,AZ,Zip Code Area,85936,Zip Matches ZCTA
+85937,Snowflake,AZ,Zip Code Area,85937,Zip Matches ZCTA
+85938,Springerville,AZ,Zip Code Area,85938,Zip Matches ZCTA
+85939,Taylor,AZ,Zip Code Area,85939,Zip Matches ZCTA
+85940,Vernon,AZ,Post Office or large volume customer,85940,Zip Matches ZCTA
+85941,Whiteriver,AZ,Zip Code Area,85941,Zip Matches ZCTA
+85942,Woodruff,AZ,Post Office or large volume customer,85942,Zip Matches ZCTA
+86001,Flagstaff,AZ,Zip Code Area,86001,Zip Matches ZCTA
+86002,Flagstaff,AZ,Post Office or large volume customer,86001,Spatial join to ZCTA
+86003,Flagstaff,AZ,Post Office or large volume customer,86003,Zip Matches ZCTA
+86004,Flagstaff,AZ,Zip Code Area,86004,Zip Matches ZCTA
+86005,Flagstaff,AZ,Zip Code Area,86001,Spatial join to ZCTA
+86011,Flagstaff,AZ,Zip Code Area,86011,Zip Matches ZCTA
+86015,Bellemont,AZ,Post Office or large volume customer,86015,Zip Matches ZCTA
+86016,Gray Mountain,AZ,Post Office or large volume customer,86016,Zip Matches ZCTA
+86017,Munds Park,AZ,Zip Code Area,86017,Zip Matches ZCTA
+86018,Parks,AZ,Post Office or large volume customer,86018,Zip Matches ZCTA
+86020,Cameron,AZ,Post Office or large volume customer,86020,Zip Matches ZCTA
+86021,Colorado City,AZ,Zip Code Area,86021,Zip Matches ZCTA
+86022,Fredonia,AZ,Zip Code Area,86022,Zip Matches ZCTA
+86023,Grand Canyon,AZ,Zip Code Area,86023,Zip Matches ZCTA
+86024,Happy Jack,AZ,Zip Code Area,86024,Zip Matches ZCTA
+86025,Holbrook,AZ,Zip Code Area,86025,Zip Matches ZCTA
+86028,Petrified Forest Natl Pk,AZ,Zip Code Area,86028,Zip Matches ZCTA
+86029,Sun Valley,AZ,Post Office or large volume customer,86029,Zip Matches ZCTA
+86030,Hotevilla,AZ,Zip Code Area,86030,Zip Matches ZCTA
+86031,Indian Wells,AZ,Post Office or large volume customer,86031,Zip Matches ZCTA
+86032,Joseph City,AZ,Zip Code Area,86032,Zip Matches ZCTA
+86033,Kayenta,AZ,Zip Code Area,86033,Zip Matches ZCTA
+86034,Keams Canyon,AZ,Zip Code Area,86034,Zip Matches ZCTA
+86035,Leupp,AZ,Zip Code Area,86035,Zip Matches ZCTA
+86036,Marble Canyon,AZ,Zip Code Area,86036,Zip Matches ZCTA
+86038,Mormon Lake,AZ,Zip Code Area,86038,Zip Matches ZCTA
+86039,Kykotsmovi Village,AZ,Zip Code Area,86039,Zip Matches ZCTA
+86040,Page,AZ,Zip Code Area,86040,Zip Matches ZCTA
+86042,Polacca,AZ,Zip Code Area,86042,Zip Matches ZCTA
+86043,Second Mesa,AZ,Zip Code Area,86043,Zip Matches ZCTA
+86044,Tonalea,AZ,Zip Code Area,86044,Zip Matches ZCTA
+86045,Tuba City,AZ,Zip Code Area,86045,Zip Matches ZCTA
+86046,Williams,AZ,Zip Code Area,86046,Zip Matches ZCTA
+86047,Winslow,AZ,Zip Code Area,86047,Zip Matches ZCTA
+86052,North Rim,AZ,Zip Code Area,86052,Zip Matches ZCTA
+86053,Kaibeto,AZ,Zip Code Area,86053,Zip Matches ZCTA
+86054,Shonto,AZ,Zip Code Area,86054,Zip Matches ZCTA
+86301,Prescott,AZ,Zip Code Area,86301,Zip Matches ZCTA
+86302,Prescott,AZ,Post Office or large volume customer,86303,Spatial join to ZCTA
+86303,Prescott,AZ,Zip Code Area,86303,Zip Matches ZCTA
+86304,Prescott,AZ,Post Office or large volume customer,86301,Spatial join to ZCTA
+86305,Prescott,AZ,Zip Code Area,86305,Zip Matches ZCTA
+86312,Prescott Valley,AZ,Post Office or large volume customer,86314,Spatial join to ZCTA
+86313,Prescott,AZ,Post Office or large volume customer,86313,Zip Matches ZCTA
+86314,Prescott Valley,AZ,Zip Code Area,86314,Zip Matches ZCTA
+86315,Prescott Valley,AZ,Zip Code Area,86315,Zip Matches ZCTA
+86320,Ash Fork,AZ,Zip Code Area,86320,Zip Matches ZCTA
+86321,Bagdad,AZ,Zip Code Area,86321,Zip Matches ZCTA
+86322,Camp Verde,AZ,Zip Code Area,86322,Zip Matches ZCTA
+86323,Chino Valley,AZ,Zip Code Area,86323,Zip Matches ZCTA
+86324,Clarkdale,AZ,Zip Code Area,86324,Zip Matches ZCTA
+86325,Cornville,AZ,Zip Code Area,86325,Zip Matches ZCTA
+86326,Cottonwood,AZ,Zip Code Area,86326,Zip Matches ZCTA
+86327,Dewey,AZ,Zip Code Area,86327,Zip Matches ZCTA
+86329,Humboldt,AZ,Post Office or large volume customer,86329,Zip Matches ZCTA
+86331,Jerome,AZ,Zip Code Area,86331,Zip Matches ZCTA
+86332,Kirkland,AZ,Zip Code Area,86332,Zip Matches ZCTA
+86333,Mayer,AZ,Zip Code Area,86333,Zip Matches ZCTA
+86334,Paulden,AZ,Zip Code Area,86334,Zip Matches ZCTA
+86335,Rimrock,AZ,Zip Code Area,86335,Zip Matches ZCTA
+86336,Sedona,AZ,Zip Code Area,86336,Zip Matches ZCTA
+86337,Seligman,AZ,Zip Code Area,86337,Zip Matches ZCTA
+86338,Skull Valley,AZ,Post Office or large volume customer,86338,Zip Matches ZCTA
+86339,Sedona,AZ,Post Office or large volume customer,86336,Spatial join to ZCTA
+86340,Sedona,AZ,Post Office or large volume customer,86336,Spatial join to ZCTA
+86341,Sedona,AZ,Post Office or large volume customer,86351,Spatial join to ZCTA
+86342,Lake Montezuma,AZ,Post Office or large volume customer,86335,Spatial join to ZCTA
+86343,Crown King,AZ,Zip Code Area,86343,Zip Matches ZCTA
+86351,Sedona,AZ,Zip Code Area,86351,Zip Matches ZCTA
+86401,Kingman,AZ,Zip Code Area,86401,Zip Matches ZCTA
+86402,Kingman,AZ,Post Office or large volume customer,86401,Spatial join to ZCTA
+86403,Lake Havasu City,AZ,Zip Code Area,86403,Zip Matches ZCTA
+86404,Lake Havasu City,AZ,Zip Code Area,86404,Zip Matches ZCTA
+86405,Lake Havasu City,AZ,Post Office or large volume customer,86403,Spatial join to ZCTA
+86406,Lake Havasu City,AZ,Zip Code Area,86406,Zip Matches ZCTA
+86409,Kingman,AZ,Zip Code Area,86409,Zip Matches ZCTA
+86411,Hackberry,AZ,Zip Code Area,86411,Zip Matches ZCTA
+86412,Hualapai,AZ,Post Office or large volume customer,86409,Spatial join to ZCTA
+86413,Golden Valley,AZ,Zip Code Area,86413,Zip Matches ZCTA
+86426,Fort Mohave,AZ,Zip Code Area,86426,Zip Matches ZCTA
+86427,Fort Mohave,AZ,Post Office or large volume customer,86426,Spatial join to ZCTA
+86429,Bullhead City,AZ,Zip Code Area,86429,Zip Matches ZCTA
+86430,Bullhead City,AZ,Post Office or large volume customer,86429,Spatial join to ZCTA
+86431,Chloride,AZ,Post Office or large volume customer,86431,Zip Matches ZCTA
+86432,Littlefield,AZ,Zip Code Area,86432,Zip Matches ZCTA
+86433,Oatman,AZ,Zip Code Area,86433,Zip Matches ZCTA
+86434,Peach Springs,AZ,Zip Code Area,86434,Zip Matches ZCTA
+86435,Supai,AZ,Zip Code Area,86435,Zip Matches ZCTA
+86436,Topock,AZ,Zip Code Area,86436,Zip Matches ZCTA
+86437,Valentine,AZ,Post Office or large volume customer,86437,Zip Matches ZCTA
+86438,Yucca,AZ,Post Office or large volume customer,86438,Zip Matches ZCTA
+86439,Bullhead City,AZ,Post Office or large volume customer,86442,Spatial join to ZCTA
+86440,Mohave Valley,AZ,Zip Code Area,86440,Zip Matches ZCTA
+86441,Dolan Springs,AZ,Zip Code Area,86441,Zip Matches ZCTA
+86442,Bullhead City,AZ,Zip Code Area,86442,Zip Matches ZCTA
+86443,Temple Bar Marina,AZ,Post Office or large volume customer,86443,Zip Matches ZCTA
+86444,Meadview,AZ,Zip Code Area,86444,Zip Matches ZCTA
+86445,Willow Beach,AZ,Zip Code Area,86445,Zip Matches ZCTA
+86446,Mohave Valley,AZ,Post Office or large volume customer,86440,Spatial join to ZCTA
+86502,Chambers,AZ,Zip Code Area,86502,Zip Matches ZCTA
+86503,Chinle,AZ,Zip Code Area,86503,Zip Matches ZCTA
+86504,Fort Defiance,AZ,Post Office or large volume customer,86504,Zip Matches ZCTA
+86505,Ganado,AZ,Zip Code Area,86505,Zip Matches ZCTA
+86506,Houck,AZ,Post Office or large volume customer,86506,Zip Matches ZCTA
+86507,Lukachukai,AZ,Zip Code Area,86507,Zip Matches ZCTA
+86508,Lupton,AZ,Post Office or large volume customer,86508,Zip Matches ZCTA
+86510,Pinon,AZ,Zip Code Area,86510,Zip Matches ZCTA
+86511,Saint Michaels,AZ,Zip Code Area,86511,Zip Matches ZCTA
+86512,Sanders,AZ,Post Office or large volume customer,86512,Zip Matches ZCTA
+86514,Teec Nos Pos,AZ,Zip Code Area,86514,Zip Matches ZCTA
+86515,Window Rock,AZ,Post Office or large volume customer,86515,Zip Matches ZCTA
+86520,Blue Gap,AZ,Post Office or large volume customer,86520,Zip Matches ZCTA
+86535,Dennehotso,AZ,Zip Code Area,86535,Zip Matches ZCTA
+86538,Many Farms,AZ,Zip Code Area,86538,Zip Matches ZCTA
+86540,Nazlini,AZ,Post Office or large volume customer,86540,Zip Matches ZCTA
+86544,Red Valley,AZ,Post Office or large volume customer,86544,Zip Matches ZCTA
+86545,Rock Point,AZ,Post Office or large volume customer,86545,Zip Matches ZCTA
+86547,Round Rock,AZ,Post Office or large volume customer,86547,Zip Matches ZCTA
+86556,Tsaile,AZ,Zip Code Area,86556,Zip Matches ZCTA
