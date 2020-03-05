@@ -100,11 +100,16 @@ az_zcta_movement <- az_zcta_movement %>%
 #normalize the totals column by population
 normalized_az <- mutate(az_zcta,
                         normalized_total=(contribution_receipt_amount/total_population)*100)
+<<<<<<< HEAD
 
 raw_az_totals <- az_zcta %>% 
   group_by(ZCTA, name) %>% 
   summarise(total_raised = sum(contribution_receipt_amount))
 
+=======
+raw_az_totals <- az_zcta %>% 
+  group_by(ZCTA, name)
+>>>>>>> f78e1dece4075de7942496b70ac3db5dc7192a00
 #get the total raised per zcta
 az_totals <- normalized_az %>% 
   group_by(ZCTA, name) %>% 
