@@ -115,7 +115,10 @@ az_totals <- az_totals %>%
 candidate_comparison_az <-az_totals %>% 
   spread(name, total_raised) %>% 
   rename(mcsally_raised="MCSALLY FOR SENATE INC", 
-         kelly_raised="MARK KELLY FOR SENATE") %>% 
+         kelly_raised="MARK KELLY FOR SENATE")
+candidate_comparison_az$mcsally_raised <- coalesce(candidate_comparison_az$mcsally_raised, 0)
+candidate_comparison_az$kelly_raised <- coalesce(candidate_comparison_az$kelly_raised, 0)
+candidate_comparison_az <- candidate_comparison_az %>% 
   mutate(marthavsmark = sum(mcsally_raised-kelly_raised))
 write_csv(candidate_comparison_az, "output/march3/candidate_fundraising_comparison.csv")
 
