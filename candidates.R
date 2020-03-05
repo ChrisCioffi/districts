@@ -71,6 +71,9 @@ instate_funds$contributor_zip <- substr(instate_funds$contributor_zip, 1, 5)
 crosswalk <- read_csv("data/zip_to_zcta_2019.csv")
 crosswalked_contribs <- left_join(instate_funds, crosswalk, by=c("contributor_zip" = "ZIP_CODE"))
 
+# filter out erroneous 00001 zip
+crosswalked_contribs <- filter(crosswalked_contribs, contributor_zip != "00001")
+
 # call population data from the census (this calls population for all zctas)
 population <- getCensus(name = "acs/acs5",
                         vintage = 2018,
@@ -88,19 +91,20 @@ az_zcta <- left_join(crosswalked_contribs, population, by=c("ZCTA" = "zip_code_t
 #normalize the totals column by population
 normalized_az <- mutate(az_zcta,
                         normalized_total=(contribution_receipt_amount/total_population)*100)
-
+raw_az_totals <- az_zcta %>% 
+  group_by(ZCTA, name)
 #get the total raised per zcta
 az_totals <- normalized_az %>% 
   group_by(ZCTA, name) %>% 
   summarise(total_raised = sum(normalized_total))
-
-# write_csv(az_totals, "output/az_totals_yearend.csv")
 
 #round normalized_total to two decimals
 az_totals <- az_totals %>% 
   mutate(total_raised=round(total_raised, digits=2))
 
 #removes Inf total raised, which are numbers that couldn't be computed (divisons by zero)
+## includes kelly zips 85341 and 85726 totaling $1135
+## and mcsally zip 85726 totaling $11,900 from three contributors
 az_totals <- az_totals %>%
   filter_if(~is.numeric(.), all_vars(!is.infinite(.)))
 
@@ -111,15 +115,15 @@ candidate_comparison_az <-az_totals %>%
   rename(mcsally_raised="MCSALLY FOR SENATE INC", 
          kelly_raised="MARK KELLY FOR SENATE") %>% 
   mutate(marthavsmark = sum(mcsally_raised-kelly_raised))
-write_csv(candidate_comparison_az, "output/candidate_fundraising_comparison.csv")
+write_csv(candidate_comparison_az, "output/march3/candidate_fundraising_comparison.csv")
 
 #separate candidates into their own dataframes
 mcsally_instate <- filter(az_totals, name=="MCSALLY FOR SENATE INC" )
 kelly_instate <- filter(az_totals, name=="MARK KELLY FOR SENATE" )
 
 # export csvs for qgis
-write_csv(mcsally_instate, "output/mcsallyInstate_final.csv")
-write_csv(kelly_instate, "output/kellyInstate_final.csv")
+write_csv(mcsally_instate, "output/march3/mcsallyInstate_final.csv")
+write_csv(kelly_instate, "output/march3/kellyInstate_final.csv")
 
 
 ### Get out of state funds ###
@@ -147,8 +151,8 @@ kelly_outstate <- filter(state_totals, name=="MARK KELLY FOR SENATE")
 
 
 #export for graphics
-write_csv(mcsally_outstate, "output/mcsallyOutstate_final.csv")
-write_csv(kelly_outstate, "output/kellyOutstate_final.csv")
+write_csv(mcsally_outstate, "output/march3/mcsallyOutstate_final.csv")
+write_csv(kelly_outstate, "output/march3/kellyOutstate_final.csv")
 
 
 ### --- misc queries --- ###
